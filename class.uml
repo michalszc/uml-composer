@@ -1,0 +1,54 @@
+@startuml class
+
+// komentarz
+
+// diagram klas
+
+class klasa1 {
+    attributes {
+        - atrybut_prywatny : typ
+        + atrybut_publiczny : typ
+        # atrybut_chroniony : typ
+    }
+    methods {
+        - metoda_prywatna : typ
+        + metoda_publiczna : typ
+        # metoda_chroniona : typ
+    }
+} 
+
+class klasa2 {
+    attributes {
+        - atrybut_prywatny : typ
+        + atrybut_publiczny : typ
+        # atrybut_chroniony : typ
+    }
+    methods {
+        - metoda_prywatna : typ
+        + metoda_publiczna : typ
+        # metoda_chroniona : typ
+    }
+} 
+
+interface interfejs1 {
+    attributes {
+        - atrybut_prywatny : typ
+        + atrybut_publiczny : typ
+        # atrybut_chroniony : typ
+    }
+    methods {
+        - metoda_prywatna : typ
+        + metoda_publiczna : typ
+        # metoda_chroniona : typ
+    }
+}
+
+klasa1 -- klasa2 // ciagl kreska
+klasa1 --> klasa2 // ciagla kreska z strzalka
+klasa1 .. klasa2 // przerywana kreska
+klasa1 ..> klasa2 // przerywana kreska z strzalka
+
+klasa1 -- klasa2 : < "lorem ipsum 123"
+klasa1 -- klasa2 : "lorem ipsum 123"
+
+@enduml
