@@ -2,16 +2,16 @@ name: Check and test the source code
 
 on:
   pull_request:
-    branches: [ "master" ]
+    branches:
+      - master
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  test:
     name: Check the source code
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v3
     - name: Install SFML
