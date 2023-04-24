@@ -5,5 +5,6 @@
 
 This project is a graphical Unified Modelling Language (UML) generator. It allows the creation of UML diagrams based on a simple textual description of the model.
 
+
 ## License
 [![Licence](https://img.shields.io/github/license/michalszc/uml-composer?style=for-the-badge)](./LICENSE)
