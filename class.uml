@@ -48,7 +48,7 @@ klasa1 --> klasa2 // ciagla kreska z strzalka
 klasa1 .. klasa2 // przerywana kreska
 klasa1 ..> klasa2 // przerywana kreska z strzalka
 
-klasa1 -- klasa2 : < "lorem ipsum 123"
 klasa1 -- klasa2 : "lorem ipsum 123"
+klasa1 -- klasa2 : "lorem ipsum 124" >
 
 @enduml
