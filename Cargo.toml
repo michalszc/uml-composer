@@ -6,4 +6,3 @@ edition = "2021"
 [dependencies]
 pest = "2.5.7"
 pest_derive = "2.5.7"
-sfml = "0.20.0"
