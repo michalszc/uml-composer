@@ -1,5 +1,11 @@
 use pest::iterators::Pair;
 use crate::grammar_parser::Rule;
+use svg::node::{
+    element::{
+        SVG, Definitions, Line, Marker, Polygon, Text as TextElement
+    }, 
+    Text
+};
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum ArrowType {
@@ -46,7 +52,7 @@ impl Link {
             Some(l) => {
                 l.as_str().to_owned().replace("\"", "")
             }
-            None => String::from("")
+            None => String::new()
         };
 
         let arrow: ArrowType = match inner.next() {
@@ -92,5 +98,72 @@ impl Link {
     pub fn print(&self) {
         println!("Left: {:?} Link: {:?} Right: {:?} Label: {:?} Arrow: {:?}",
             self.left_id, self.link_type, self.right_id, self.label, self.arrow);
+    }
+
+    pub fn draw(&self, svg: &mut SVG, x1: i32, y1: i32, x2: i32, y2: i32) {
+        let arrowhead = Marker::new()
+            .set("id", "arrowhead")
+            .set("markerWidth", "10")
+            .set("markerHeight", "7")
+            .set("refX", "0")
+            .set("refY", "3.5")
+            .set("orient", "auto")
+            .add(
+                Polygon::new()
+                    .set("points", "0 0, 10 3.5, 0 7")
+            );
+
+        let mut line = Line::new()
+            .set("x1", x1.to_string())
+            .set("y1", y1.to_string())
+            .set("x2", x2.to_string())
+            .set("y2", y2.to_string())
+            .set("stroke", "#000")
+            .set("stroke-width", "8");
+        
+        if self.link_type == LinkType::DashedLine || self.link_type == LinkType::DashedArrow {
+            line = line.set("stroke-dasharray", "8 8");
+        }
+
+        if self.link_type == LinkType::SolidArrow || self.link_type == LinkType::DashedArrow {
+            line = line.set("marker-end", "url(#arrowhead)");
+            let defs = Definitions::new().add(arrowhead);
+            *svg = svg.clone().add(defs);
+        }
+
+        if !self.label.is_empty() {
+            // Calculate the angle of the line
+            let angle = ((y2 - y1) as f32 / (x2 - x1) as f32).atan();
+
+            // Calculate the center point of the line
+            let center_x = (x1 + x2) / 2;
+            let center_y = (y1 + y2) / 2;
+
+            let text = match self.arrow {
+                ArrowType::Left => {
+                    Text::new((self.label.clone() + "◀").as_str())
+                },
+                ArrowType::Right => {
+                    Text::new((self.label.clone() + "▶").as_str())
+                },
+                ArrowType::Missing => Text::new(self.label.as_str())
+            };
+
+            // Create a text element
+            let text_element = TextElement::new()
+                .set("x", center_x)
+                .set("y", center_y - 20)
+                .set("text-anchor", "middle")
+                .set("dominant-baseline", "central")
+                .set("fill", "black")
+                .set("font-size", 28)
+                .set("transform", 
+                    format!("rotate({} {} {})", angle.to_degrees(), center_x, center_y))
+                .add(text);
+            
+            *svg = svg.clone().add(text_element);
+        }
+
+        *svg = svg.clone().add(line);
     }
 }
