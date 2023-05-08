@@ -2,6 +2,7 @@ use pest::iterators::Pair;
 use crate::grammar_parser::Rule;
 use crate::rules::structs::Visibility::{PRIVATE, PROTECTED, PUBLIC};
 
+#[derive(Debug, PartialEq, Eq)]
 pub enum Visibility{
     PRIVATE,
     PROTECTED,
@@ -61,6 +62,11 @@ impl Class {
         }
     }
 
+    pub fn get_keyword(&self) -> &String {&self.keyword}
+    pub fn get_name(&self) -> &String {&self.name}
+    pub fn get_attributes(&self) -> &Vec<Component> {&self.attributes}
+    pub fn get_methods(&self) -> &Vec<Component> {&self.methods}
+
     pub fn print(&self) {
         println!("{} {}\n\
         attributes:", self.keyword, self.name);
@@ -76,7 +82,7 @@ impl Class {
 }
 
 impl Component {
-    fn extract_attribute(value: Pair<Rule>) -> Component {
+    pub fn extract_attribute(value: Pair<Rule>) -> Component {
         let mut attribute = value.into_inner();
         let visibility: Visibility = match attribute.next().unwrap().as_str() {
             "-" => PRIVATE,
@@ -97,6 +103,10 @@ impl Component {
             kind
         }
     }
+
+    pub fn get_name(&self) -> &String {&self.name}
+    pub fn get_visibility(&self) -> &Visibility {&self.visibility}
+    pub fn get_kind(&self) -> &String {&self.kind}
 
     pub fn print(&self) {
         let v = match self.visibility {
