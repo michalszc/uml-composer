@@ -29,14 +29,12 @@ impl Class {
         let mut attributes = Vec::new();
         let mut methods = Vec::new();
         let mut inner = value.into_inner();
-        inner.next(); // skip keyword
         let name= inner.next().unwrap().as_str().to_owned();
         let body = inner.next().unwrap();
         for inner_pair in body.into_inner() {
             match inner_pair.as_rule() {
                 Rule::ATTRIBUTES => {
                     let mut att = inner_pair.into_inner();
-                    att.next(); // skip keyword
                     let component_list = att.next().unwrap().into_inner();
                     for ii_pair in component_list {
                         attributes.push(Component::extract_attribute(ii_pair));
@@ -44,7 +42,6 @@ impl Class {
                 }
                 Rule::METHODS => {
                     let mut met = inner_pair.into_inner();
-                    met.next(); // skip keyword
                     let component_list = met.next().unwrap().into_inner();
                     for ii_pair in component_list {
                         methods.push(Component::extract_attribute(ii_pair));
