@@ -4,7 +4,8 @@ use crate::rules::use_case::UseCase;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Context {
-    use_cases: Vec<UseCase>,
+    label: String,
+    use_cases: Vec<UseCase>
 }
 
 impl Context {
@@ -12,23 +13,26 @@ impl Context {
         let mut use_cases = Vec::new();
         let mut inner = value.into_inner();
 
-        while let Some(use_case_pair) = inner.next() {
-            let use_case = UseCase::new(use_case_pair);
-            use_cases.push(use_case);
+        inner.next(); // skip 'context'
+        let label = inner.next().unwrap().as_str().trim().to_owned();
+
+        for use_case in inner.next().unwrap().into_inner(){
+            use_cases.push(UseCase::new(use_case));
         }
 
         Context {
-            use_cases,
+            label,
+            use_cases
         }
     }
+    pub fn get_context_label(&self) -> &String {&self.label}
 
     pub fn get_use_cases(&self) -> &Vec<UseCase> {
         &self.use_cases
     }
 
     pub fn print(&self) {
-        println!("Context:");
-
+        println!("Context name {}: ", self.label);
         for use_case in &self.use_cases {
             use_case.print();
         }

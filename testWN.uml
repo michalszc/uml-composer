@@ -1,9 +1,11 @@
 @startuml usecase
 
 actor Guest as g
+actor Guest2
 
 context Restaurant {
     usecase "Eat food" as uc1
+    usecase "Tak"
     usecase "Pay for food" as uc2
 }
 

@@ -49,9 +49,11 @@ impl UmlParser {
                                 Actor::new(inner_pair).print();
                             }
                             Rule::CONTEXT => {
-                                for ii_pair in inner_pair.into_inner(){
-                                    println!("{:?}",ii_pair);
-                                }
+                                Context::new(inner_pair).print();
+                                // for ii_pair in inner_pair.into_inner(){
+                                //     println!("{:?}",ii_pair);
+                                // }
+
                                 // Context::new(inner_pair).print();
                             }
                             Rule::LINK => {
