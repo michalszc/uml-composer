@@ -17,3 +17,12 @@ Cargo.lock
 # Added by cargo
 
 /target
+
+# SVG
+*.svg
+
+# IDE settings
+.vscode
+.idea
+
+.DS_Store
