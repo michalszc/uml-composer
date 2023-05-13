@@ -1,0 +1,15 @@
+@startuml usecase
+
+actor Guest as g
+actor Guest2
+
+context Restaurant {
+    usecase "Eat food" as uc1
+    usecase "Tak"
+    usecase "Pay for food" as uc2
+}
+
+g --> uc1
+g --> uc2
+
+@enduml

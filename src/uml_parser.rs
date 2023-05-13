@@ -2,6 +2,8 @@ use pest::Parser;
 use crate::rules::link::Link;
 use crate::rules::structs::Class;
 use crate::grammar_parser::{GrammarParser, Rule};
+use crate::rules::actor::Actor;
+use crate::rules::context::Context;
 use svg::{Document, node::element::SVG};
 
 pub struct UmlParser {
@@ -40,15 +42,21 @@ impl UmlParser {
                     for inner_pair in pair.into_inner(){
                         match inner_pair.as_rule() {
                             Rule::start_use_case => println!("{:?}", inner_pair),
+                            // Rule::ACTOR => {
+                            //     for ii_pair in inner_pair.into_inner(){
+                            //         println!("{:?}",ii_pair);
+                            //     }
+                            // }
                             Rule::ACTOR => {
-                                for ii_pair in inner_pair.into_inner(){
-                                    println!("{:?}",ii_pair);
-                                }
+                                Actor::new(inner_pair).print();
                             }
                             Rule::CONTEXT => {
-                                for ii_pair in inner_pair.into_inner(){
-                                    println!("{:?}",ii_pair);
-                                }
+                                Context::new(inner_pair).print();
+                                // for ii_pair in inner_pair.into_inner(){
+                                //     println!("{:?}",ii_pair);
+                                // }
+
+                                // Context::new(inner_pair).print();
                             }
                             Rule::LINK => {
                                 Link::new(inner_pair).print();
