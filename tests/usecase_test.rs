@@ -21,7 +21,6 @@ mod use_case_test {
         let width = 100;
         use_case.draw(&mut svg, x, y, height, width);
 
-        // println!("{}", svg.to_string());
 
         let expected_svg = format!(
             "{}\n\
