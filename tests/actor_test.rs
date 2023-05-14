@@ -20,7 +20,6 @@ mod actor_test {
         let y = 100;
         let r = 20;
         actor.draw(&mut svg, x, y, r);
-        // println!("{}", svg.to_string());
         let expected_svg = format!(
             "{}\n<text dominant-baseline=\"central\" fill=\"black\" font-size=\"28\" text-anchor=\
             \"middle\" x=\"100\" y=\"60\">\nGuest\n</text>\n<circle cx=\"{}\" cy=\"{}\" fill=\
