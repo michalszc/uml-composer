@@ -13,7 +13,7 @@ pub struct UmlParser {
 impl UmlParser {
     pub fn parse(value: &str, file_name: String) {
         let mut svg = SVG::new()
-            .set("viewBox", "0 0 500 500");
+            .set("viewBox", "0 0 1000 1000");
         let program = GrammarParser::parse(Rule::PROGRAM, value)
             .unwrap_or_else(|e| panic!("{}", e))
             .next().unwrap();
@@ -25,7 +25,7 @@ impl UmlParser {
                         match inner_pair.as_rule() {
                             Rule::start_class => println!("{:?}", inner_pair),
                             Rule::CLASS => {
-                                Class::new(inner_pair, false).print();
+                                Class::new(inner_pair, false).draw(&mut svg, 200, 200);
                             }
                             Rule::INTERFACE => {
                                 Class::new(inner_pair, true).print();

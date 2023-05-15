@@ -1,6 +1,7 @@
 use pest::iterators::Pair;
 use crate::grammar_parser::Rule;
 use crate::rules::structs::Visibility::{PRIVATE, PROTECTED, PUBLIC};
+use svg;
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum Visibility{
@@ -20,6 +21,16 @@ pub struct Class {
     name: String,
     attributes: Vec<Component>,
     methods: Vec<Component>
+}
+
+fn add_text(text : svg::node::Text, i: usize, x: usize, y: usize) -> svg::node::element::Text {
+    svg::node::element::Text::new()
+        .set("x", x + 15)
+        .set("y", y + 87 + i*50)
+        .set("dominant-baseline", "central")
+        .set("fill", "black")
+        .set("font-size", 28)
+        .add(text)
 }
 
 impl Class {
@@ -75,6 +86,100 @@ impl Class {
             method.print();
         }
         println!();
+    }
+
+    pub fn draw(&self, svg: &mut svg::node::element::SVG, x: usize, y: usize) {
+
+        let name = svg::node::Text::new(self.name.as_str());
+
+        let mut i:usize = 0;
+        let mut texts = Vec::new();
+
+        let mut width:usize = 0;
+
+        for component in &self.attributes {
+            let vis = match component.visibility {
+                PRIVATE => "-",
+                PROTECTED => "#",
+                PUBLIC => "+"
+            };
+            let kind = if component.kind.is_empty() {"".to_owned()} else {
+                " : ".to_owned() + component.kind.as_str()
+            };
+            let content = vis.to_string() + " " + component.get_name() + &kind;
+            let new_width:usize = content.len()*15;
+            if new_width > width {
+                width = new_width;
+            }
+            let text = svg::node::Text::new(content);
+            let attrib = add_text(text, i, x ,y);
+            texts.push(attrib);
+
+            i += 1;
+        }
+
+        for method in &self.methods {
+            let vis = match method.visibility {
+                PRIVATE => "-",
+                PROTECTED => "#",
+                PUBLIC => "+"
+            };
+            let kind = if method.kind.is_empty() {"".to_owned()} else {
+                " : ".to_owned() + method.kind.as_str()
+            };
+            let content = vis.to_string() + " " + method.get_name() + "()" + &kind;
+            let new_width:usize = content.len()*15;
+            if new_width > width {
+                width = new_width;
+            }
+            let text = svg::node::Text::new(content);
+            let meth = add_text(text, i, x, y);
+            texts.push(meth);
+            i += 1;
+        }
+
+        let rect = svg::node::element::Rectangle::new()
+            .set("x", x)
+            .set("y", y)
+            .set("width", width)
+            .set("height", (i+1)*50)
+            .set("fill", "white")
+            .set("stroke", "black")
+            .set("stroke-width", 10);
+        *svg = svg.clone().add(rect);
+
+        let name_label = svg::node::element::Text::new()
+            .set("x", x + 200)
+            .set("y", y + 37)
+            .set("text-anchor", "middle")
+            .set("dominant-baseline", "central")
+            .set("fill", "black")
+            .set("font-size", 28)
+            .add(name);
+        *svg = svg.clone().add(name_label);
+
+        let line = svg::node::element::Line::new()
+            .set("x1", x)
+            .set("y1", y + 50)
+            .set("x2", x + width)
+            .set("y2", y + 50)
+            .set("stroke", "#000")
+            .set("stroke-width", 5);
+        *svg = svg.clone().add(line);
+
+        let line_comp = svg::node::element::Line::new()
+            .set("x1", x)
+            .set("y1", y + (i-self.attributes.len()+1)*50)
+            .set("x2", x + width)
+            .set("y2", y + ((i-self.attributes.len())+1)*50)
+            .set("stroke", "#000")
+            .set("stroke-width", 5);
+        *svg = svg.clone().add(line_comp);
+
+        for attrib in texts {
+            *svg = svg.clone().add(attrib);
+        }
+
     }
 }
 
