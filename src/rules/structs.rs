@@ -20,7 +20,9 @@ pub struct Class {
     keyword: String,
     name: String,
     attributes: Vec<Component>,
-    methods: Vec<Component>
+    methods: Vec<Component>,
+    x: usize,
+    y: usize
 }
 
 fn add_text(text : svg::node::Text, i: usize, x: usize, y: usize) -> svg::node::element::Text {
@@ -66,7 +68,9 @@ impl Class {
             keyword,
             name,
             attributes,
-            methods
+            methods,
+            x: 0,
+            y: 0,
         }
     }
 
@@ -90,6 +94,8 @@ impl Class {
 
     pub fn draw(&self, svg: &mut svg::node::element::SVG, x: usize, y: usize) {
 
+        let additional = if self.keyword != "class".to_owned() { 50 } else { 0 };
+
         let name = svg::node::Text::new(self.name.as_str());
 
         let mut i:usize = 0;
@@ -112,7 +118,7 @@ impl Class {
                 width = new_width;
             }
             let text = svg::node::Text::new(content);
-            let attrib = add_text(text, i, x ,y);
+            let attrib = add_text(text, i, x ,y + additional);
             texts.push(attrib);
 
             i += 1;
@@ -133,7 +139,7 @@ impl Class {
                 width = new_width;
             }
             let text = svg::node::Text::new(content);
-            let meth = add_text(text, i, x, y);
+            let meth = add_text(text, i, x, y + additional);
             texts.push(meth);
             i += 1;
         }
@@ -142,15 +148,28 @@ impl Class {
             .set("x", x)
             .set("y", y)
             .set("width", width)
-            .set("height", (i+1)*50)
+            .set("height", (i+1)*50+additional)
             .set("fill", "white")
             .set("stroke", "black")
             .set("stroke-width", 10);
         *svg = svg.clone().add(rect);
 
+        if self.keyword == "interface".to_owned() {
+            let text = svg::node::Text::new("(interface)");
+            let keyword = svg::node::element::Text::new()
+                .set("x", x + 200)
+                .set("y", y + 37)
+                .set("text-anchor", "middle")
+                .set("dominant-baseline", "central")
+                .set("fill", "black")
+                .set("font-size", 28)
+                .add(text);
+            *svg = svg.clone().add(keyword);
+        }
+
         let name_label = svg::node::element::Text::new()
             .set("x", x + 200)
-            .set("y", y + 37)
+            .set("y", y + 37+additional)
             .set("text-anchor", "middle")
             .set("dominant-baseline", "central")
             .set("fill", "black")
@@ -160,18 +179,18 @@ impl Class {
 
         let line = svg::node::element::Line::new()
             .set("x1", x)
-            .set("y1", y + 50)
+            .set("y1", y + 50 + additional)
             .set("x2", x + width)
-            .set("y2", y + 50)
+            .set("y2", y + 50 + additional)
             .set("stroke", "#000")
             .set("stroke-width", 5);
         *svg = svg.clone().add(line);
 
         let line_comp = svg::node::element::Line::new()
             .set("x1", x)
-            .set("y1", y + (i-self.attributes.len()+1)*50)
+            .set("y1", y + (i-self.attributes.len()+1)*50 + additional)
             .set("x2", x + width)
-            .set("y2", y + ((i-self.attributes.len())+1)*50)
+            .set("y2", y + ((i-self.attributes.len())+1)*50 + additional)
             .set("stroke", "#000")
             .set("stroke-width", 5);
         *svg = svg.clone().add(line_comp);

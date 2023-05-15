@@ -25,10 +25,10 @@ impl UmlParser {
                         match inner_pair.as_rule() {
                             Rule::start_class => println!("{:?}", inner_pair),
                             Rule::CLASS => {
-                                Class::new(inner_pair, false).draw(&mut svg, 200, 200);
+                                Class::new(inner_pair, false).draw(&mut svg, 300, 300);
                             }
                             Rule::INTERFACE => {
-                                Class::new(inner_pair, true).print();
+                                Class::new(inner_pair, true).draw(&mut svg, 500, 500);
                             }
                             Rule::LINK => {
                                 Link::new(inner_pair).draw(&mut svg, x, 20, x + 200, 200);
