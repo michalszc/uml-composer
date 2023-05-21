@@ -78,6 +78,8 @@ impl Class {
     pub fn get_name(&self) -> &String {&self.name}
     pub fn get_attributes(&self) -> &Vec<Component> {&self.attributes}
     pub fn get_methods(&self) -> &Vec<Component> {&self.methods}
+    pub fn get_x(&self) -> &usize {&self.x}
+    pub fn get_y(&self) -> &usize {&self.y}
 
     pub fn print(&self) {
         println!("{} {}\n\
@@ -92,7 +94,7 @@ impl Class {
         println!();
     }
 
-    pub fn draw(&self, svg: &mut svg::node::element::SVG, x: usize, y: usize) {
+    pub fn draw(&mut self, svg: &mut svg::node::element::SVG, x: usize, y: usize) {
 
         let additional = if self.keyword != "class".to_owned() { 50 } else { 0 };
 
@@ -198,6 +200,9 @@ impl Class {
         for attrib in texts {
             *svg = svg.clone().add(attrib);
         }
+
+        self.x = x;
+        self.y = y;
 
     }
 }
