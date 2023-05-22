@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod structs_test {
     use pest::Parser;
+    use svg::node::element::SVG;
     use uml_composer::{rules::structs::{Class, Visibility, Component}, grammar_parser::{GrammarParser, Rule}};
 
     #[test]
@@ -139,5 +140,20 @@ mod structs_test {
         assert_eq!(new_class.get_name().to_owned(), String::from("klasa1"));
         assert_eq!(new_class.get_attributes().len(), 3);
         assert_eq!(new_class.get_methods().len(), 3);
+    }
+
+    #[test]
+    fn draw_class() {
+        let mut svg = SVG::new();
+        let x : usize = 10;
+        let y : usize = 20;
+        let input: &str = "interface klasa1 {\n\tmethods {\n\t\t- metoda_prywatna : typ\n\t\t+ metoda_publiczna : typ\n\t\t# metoda_chroniona\n\t}\n}\n";
+        let class = GrammarParser::parse(Rule::INTERFACE, input)
+            .unwrap().next().unwrap();
+        let mut new_class = Class::new(class.clone(), true);
+        new_class.draw(&mut svg, x, y);
+        assert_eq!(svg.to_string(), "<svg xmlns=\"http://www.w3.org/2000/svg\">\n<rect fill=\"white\" height=\"250\" stroke=\"black\" stroke-width=\"10\" width=\"390\" x=\"10\" y=\"20\"/>\n<text dominant-baseline=\"central\" fill=\"black\" font-size=\"28\" text-anchor=\"middle\" x=\"210\" y=\"57\">\n(interface)\n</text>\n<text dominant-baseline=\"central\" fill=\"black\" font-size=\"28\" text-anchor=\"middle\" x=\"210\" y=\"107\">\nklasa1\n</text>\n<line stroke=\"#000\" stroke-width=\"5\" x1=\"10\" x2=\"400\" y1=\"120\" y2=\"120\"/>\n<line stroke=\"#000\" stroke-width=\"5\" x1=\"10\" x2=\"400\" y1=\"270\" y2=\"270\"/>\n<text dominant-baseline=\"central\" fill=\"black\" font-size=\"28\" x=\"25\" y=\"157\">\n- metoda_prywatna() : typ\n</text>\n<text dominant-baseline=\"central\" fill=\"black\" font-size=\"28\" x=\"25\" y=\"207\">\n+ metoda_publiczna() : typ\n</text>\n<text dominant-baseline=\"central\" fill=\"black\" font-size=\"28\" x=\"25\" y=\"257\">\n# metoda_chroniona()\n</text>\n</svg>");
+        assert_eq!(new_class.get_x().to_owned(), x);
+        assert_eq!(new_class.get_y().to_owned(), y);
     }
 }
