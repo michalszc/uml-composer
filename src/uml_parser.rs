@@ -17,7 +17,8 @@ impl UmlParser {
         let program = GrammarParser::parse(Rule::PROGRAM, value)
             .unwrap_or_else(|e| panic!("{}", e))
             .next().unwrap();
-        let mut x = 20;
+        let mut x = 100;
+        let mut y = 100;
         for pair in program.into_inner() {
             match pair.as_rule() {
                 Rule::CLASS_DIAGRAM => {
@@ -42,24 +43,20 @@ impl UmlParser {
                     for inner_pair in pair.into_inner(){
                         match inner_pair.as_rule() {
                             Rule::start_use_case => println!("{:?}", inner_pair),
-                            // Rule::ACTOR => {
-                            //     for ii_pair in inner_pair.into_inner(){
-                            //         println!("{:?}",ii_pair);
-                            //     }
-                            // }
-                            Rule::ACTOR => {
-                                Actor::new(inner_pair).print();
-                            }
-                            Rule::CONTEXT => {
-                                Context::new(inner_pair).print();
-                                // for ii_pair in inner_pair.into_inner(){
-                                //     println!("{:?}",ii_pair);
-                                // }
 
-                                // Context::new(inner_pair).print();
+                            Rule::CONTEXT => {
+                                //Context::new(inner_pair).print();
+                                Context::new(inner_pair).draw(&mut svg, 148, 100, 350, 350);
+                            }
+
+                            Rule::ACTOR => {
+                                Actor::new(inner_pair).draw(&mut svg, x, y, 20);
+                                y += 200;
                             }
                             Rule::LINK => {
                                 Link::new(inner_pair).print();
+                                //Link::new(inner_pair).draw(&mut svg, x, 20, x + 200, 200);
+                                // x += 80;
                             }
                             _ => unreachable!()
                         }
