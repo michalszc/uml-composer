@@ -62,6 +62,9 @@ impl UmlParser {
                         }
                     }
                 }
+                Rule::ACTIVITY_DIAGRAM => {
+                    println!("{:?}", pair);
+                }
                 Rule::end_uml => println!("{:?}", pair),
                 _ => unreachable!()
             }
