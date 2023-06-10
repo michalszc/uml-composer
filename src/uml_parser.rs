@@ -1,17 +1,20 @@
+use std::str;
+use std::process::Command;
+
 use pest::Parser;
 use crate::rules::link::Link;
 use crate::rules::structs::Class;
 use crate::grammar_parser::{GrammarParser, Rule};
 use crate::rules::actor::Actor;
 use crate::rules::context::Context;
-use svg::{Document, node::element::SVG};
+use svg::{node::element::SVG};
 
 pub struct UmlParser {
 
 }
 
 impl UmlParser {
-    pub fn parse(value: &str, file_name: String) {
+    pub fn parse(value: &str) {
         let mut svg = SVG::new()
             .set("viewBox", "0 0 1000 1000");
         let program = GrammarParser::parse(Rule::PROGRAM, value)
@@ -66,7 +69,26 @@ impl UmlParser {
                 _ => unreachable!()
             }
         }
-        let document = Document::new().add(svg);
-        svg::save(file_name + ".svg", &document).unwrap();
+        svg::save("image.svg", &svg).unwrap();
+        let output = Command::new("rsvg-convert") 
+            .arg("-w")
+            .arg("1000")
+            .arg("-h")
+            .arg("1000")
+            .arg("-f")
+            .arg("png")
+            .arg("-o")
+            .arg("output.png")
+            .arg("image.svg")
+            .output()
+            .expect("Failed to execute command.");
+
+        if output.status.success() {
+            tracing::info!("Command executed successfully!");
+        } else {
+            let error_message = str::from_utf8(&output.stderr).unwrap_or("Unknown error");
+            tracing::error!("Command failed with error code: {}", output.status);
+            tracing::error!("Error message: {}", error_message);
+        }
     }
 }
