@@ -57,7 +57,7 @@ impl DynamicTabsData {
     pub fn new() -> Self {
         DynamicTabsData {
             text: String::from(""),
-            current_tab: 0,
+            current_tab: usize::MAX,
             last_tab: 0,
             removed_tabs: 0,
             tabs: Vector::new()
@@ -215,6 +215,10 @@ impl Controller<DynamicTabsData, Tabs<DynamicTabs>> for TabsControler {
         env: &Env,
     ) {
         match event {
+            Event::MouseDown(_mouse_event) => {
+                data.current_tab = child.tab_index();
+                child.event(ctx, event, data, env);
+            }
             Event::Command(cmd) if cmd.is(PREVIEW_TAB) => {
                 data.current_tab = child.tab_index();
                 let index = data.current_tab;

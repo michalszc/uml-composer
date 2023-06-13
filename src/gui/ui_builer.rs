@@ -29,7 +29,7 @@ type Nanos = u64;
 
 #[derive(Data, Clone, Lens)]
 struct AppState {
-    advanced: DynamicTabsData,
+    dynamictabdata: DynamicTabsData,
 }
 
 pub struct UIBuilder;
@@ -46,7 +46,7 @@ impl UIBuilder {
 
         // create the initial app state
         let initial_state = AppState {
-            advanced: DynamicTabsData::new(),
+            dynamictabdata: DynamicTabsData::new(),
         };
 
         // start the application
@@ -68,7 +68,7 @@ impl UIBuilder {
                     ))
                     .controller(TabsControler)
                     .with_id(TAB_ID)
-                    .lens(AppState::advanced),
+                    .lens(AppState::dynamictabdata),
             1.0)
     }
 
@@ -133,7 +133,16 @@ impl UIBuilder {
                 ctx.submit_command(PREVIEW_TAB.to(TAB_ID));
             })
             .hotkey(SysMods::Cmd, "p")
+            .enabled_if(move |data, _env| {
+                match data.dynamictabdata.tabs.get(data.dynamictabdata.current_tab) {
+                    Some(tab_data) => !tab_data.is_svg,
+                    None => false
+                }
+            })
         )
+        .refresh_on(|old_data, data, _env| {
+            old_data.dynamictabdata.current_tab != data.dynamictabdata.current_tab
+        })
     }
     
     pub fn get_open_dialog_options() -> FileDialogOptions {
@@ -180,12 +189,12 @@ impl AppDelegate<AppState> for Delegate {
         _env: &Env,
     ) -> Handled {
         if let Some(_f) = cmd.get(commands::NEW_FILE) {
-            data.advanced.add_empty_tab();
+            data.dynamictabdata.add_empty_tab();
             ctx.submit_command(SET_LAST_ACTIVE_TAB.to(TAB_ID));
             return Handled::Yes;
         }
         if let Some(_f) = cmd.get(commands::SAVE_FILE) {
-            let tab_data = data.advanced.tabs.get(data.advanced.current_tab).unwrap();
+            let tab_data = data.dynamictabdata.tabs.get(data.dynamictabdata.current_tab).unwrap();
             if  tab_data.file_path.len() > 0 {
                 let file_content = tab_data.content.clone();
                 if let Err(e) = std::fs::write(tab_data.file_path.clone(), file_content) {
@@ -197,7 +206,7 @@ impl AppDelegate<AppState> for Delegate {
             return Handled::Yes;
         }
         if let Some(file_info) = cmd.get(commands::SAVE_FILE_AS) {
-            let tab_data = data.advanced.tabs.get(data.advanced.current_tab).unwrap();
+            let tab_data = data.dynamictabdata.tabs.get(data.dynamictabdata.current_tab).unwrap();
             let file_content = tab_data.content.clone();
             if let Err(e) = std::fs::write(file_info.path(), file_content) {
                 tracing::error!("Error writing file: {e}");
@@ -207,7 +216,7 @@ impl AppDelegate<AppState> for Delegate {
         if let Some(file_info) = cmd.get(commands::OPEN_FILE) {
             match std::fs::read_to_string(file_info.path()) {
                 Ok(s) => {
-                    data.advanced.add_tab(DynamicTabData {
+                    data.dynamictabdata.add_tab(DynamicTabData {
                         is_svg: false,
                         name: file_info.path.file_name().unwrap().to_owned().to_str().unwrap().to_owned(),
                         content: s,
