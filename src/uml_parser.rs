@@ -4,6 +4,7 @@ use crate::rules::structs::Class;
 use crate::grammar_parser::{GrammarParser, Rule};
 use crate::rules::actor::Actor;
 use crate::rules::context::Context;
+use crate::rules::activity::Activity;
 use svg::{Document, node::element::SVG};
 
 pub struct UmlParser {
@@ -63,7 +64,15 @@ impl UmlParser {
                     }
                 }
                 Rule::ACTIVITY_DIAGRAM => {
-                    println!("{:?}", pair);
+                    for inner_pair in pair.into_inner(){
+                        match inner_pair.as_rule() {
+                            Rule::start_activity => println!("{:?}", inner_pair),
+                            Rule::ACTIVITY_BODY => {
+                                Activity::new(inner_pair).print();
+                            }
+                            _ => unreachable!()
+                        }
+                    }
                 }
                 Rule::end_uml => println!("{:?}", pair),
                 _ => unreachable!()
