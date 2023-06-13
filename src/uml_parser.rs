@@ -1,4 +1,4 @@
-use std::str;
+use std::{str, fs};
 use std::process::Command;
 
 use pest::Parser;
@@ -69,12 +69,14 @@ impl UmlParser {
                 _ => unreachable!()
             }
         }
+        let width = 1000; 
+        let height = 1000; 
         svg::save("image.svg", &svg).unwrap();
         let output = Command::new("rsvg-convert") 
             .arg("-w")
-            .arg("1000")
+            .arg(format!("{width}"))
             .arg("-h")
-            .arg("1000")
+            .arg(format!("{height}"))
             .arg("-f")
             .arg("png")
             .arg("-o")
@@ -82,7 +84,10 @@ impl UmlParser {
             .arg("image.svg")
             .output()
             .expect("Failed to execute command.");
-
+        match fs::remove_file("image.svg") { // removed unnecessary file
+            Ok(()) => tracing::info!("File image.svg removed successfully."),
+            Err(err) => tracing::info!("Failed to remove the file: {err}"),
+        }
         if output.status.success() {
             tracing::info!("Command executed successfully!");
         } else {
