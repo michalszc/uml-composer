@@ -8,7 +8,6 @@ use druid::widget::{
     TabsPolicy,
     Controller,
     Tabs,
-    Align,
     Either,
     Image
 };
@@ -21,18 +20,20 @@ use druid::{
     Event,
     Env,
     Widget,
-    ImageBuf
+    ImageBuf,
+    WidgetExt
 };
 
 use crate::uml_parser::UmlParser;
 
+use super::text_editor::TextEditor;
 use super::ui_builer::UIBuilder;
 
-pub const ACTIVE_TAB: Selector = Selector::new("active-tab");
-pub const SAVE_TAB: Selector = Selector::new("save-tab");
-pub const PREVIEW_TAB: Selector = Selector::new("preview-tab");
-pub const SET_ACTIVE_TAB: Selector = Selector::new("set-active-tab");
-pub const SET_LAST_ACTIVE_TAB: Selector = Selector::new("set-last-active-tab");
+pub const ACTIVE_TAB: Selector = Selector::new("tab.active");
+pub const SAVE_TAB: Selector = Selector::new("tab.save");
+pub const PREVIEW_TAB: Selector = Selector::new("tab.preview");
+pub const SET_ACTIVE_TAB: Selector = Selector::new("set.tab.active");
+pub const SET_LAST_ACTIVE_TAB: Selector = Selector::new("set.last.tab.active");
 pub const TAB_ID: WidgetId = WidgetId::reserved(1);
 
 #[derive(Data, Clone, Lens, Debug)]
@@ -44,6 +45,7 @@ pub struct DynamicTabData {
 
 #[derive(Data, Clone, Lens)]
 pub struct DynamicTabsData {
+    text: String,
     last_tab: usize,
     removed_tabs: usize,
     pub current_tab: usize,
@@ -53,6 +55,7 @@ pub struct DynamicTabsData {
 impl DynamicTabsData {
     pub fn new() -> Self {
         DynamicTabsData {
+            text: String::from(""),
             current_tab: 0,
             last_tab: 0,
             removed_tabs: 0,
@@ -176,12 +179,9 @@ impl TabsPolicy for DynamicTabs {
                 let tab = d.tabs.get(index).unwrap();
                 tab.is_svg
             },
-            // SvgWidget::new(tab_data.content.clone())
-            //                     .build(),
             img,
-            Align::centered(
-                Label::new(format!("{}", tab_data.content))
-            )
+            TextEditor::new(tab_data.content.clone())
+                            .expand()
         )
     }
 

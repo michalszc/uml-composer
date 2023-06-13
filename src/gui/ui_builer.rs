@@ -31,7 +31,7 @@ struct AppState {
 
 pub struct UIBuilder;
 impl UIBuilder {
-    pub fn new() -> UIBuilder {
+    pub fn new() -> Self {
         UIBuilder {}
     }
     pub fn build(&self) {
@@ -68,7 +68,6 @@ impl UIBuilder {
                             .with_child(
                                 self.create_custom_btn(String::from("Open"), move |ctx, _data: &mut AppState, _e| {
                                         ctx.submit_command(druid::commands::SHOW_OPEN_PANEL.with(open_dialog_options.clone()));
-                                        // ctx.submit_command(SET_LAST_ACTIVE_TAB.to(TAB_ID));
                                     }
                                 ))
                             .with_child(
