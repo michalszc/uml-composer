@@ -1,15 +1,18 @@
 use druid::widget::{
-    Axis, Tabs, TabsEdge, TabsTransition,
-    Flex, Label, Either, Painter,
-    ControllerHost, Align, Click
+    Axis, Tabs, 
+    TabsEdge, TabsTransition,
+    Flex
 };
 use druid::{
     AppLauncher, Data, Lens, Widget,
-    WidgetExt, WindowDesc, theme, Color,
-    RenderContext, EventCtx, Env, FileDialogOptions,
-    FileSpec, commands, Handled, Target,
-    AppDelegate, Command, DelegateCtx
+    WidgetExt, WindowDesc, Env,
+    FileDialogOptions, FileSpec,
+    commands, Handled, Target,
+    AppDelegate, Command, DelegateCtx,
+    Menu, WindowId, LocalizedString,
+    MenuItem, SysMods
 };
+use druid::platform_menus;
 use instant::Duration;
 use super::tabs::{
     DynamicTabsData,
@@ -37,6 +40,7 @@ impl UIBuilder {
     pub fn build(&self) {
         // describe the main window
         let main_window = WindowDesc::new(self.build_root_widget())
+        .menu(UIBuilder::make_menu)
         .title("UML - COMPOSER")
         .window_size((700.0, 400.0));
 
@@ -54,94 +58,82 @@ impl UIBuilder {
     }
 
     fn build_root_widget(&self) -> impl Widget<AppState> {
-
-        let open_dialog_options = UIBuilder::get_open_dialog_options();
-
         Flex::column()
             .with_flex_child(
-                Either::new(
-                    |data: &AppState, &_| data.advanced.tabs.is_empty(),
-                    self.create_default_window(),
-                    Flex::column()
-                        .with_flex_child(
-                            Flex::row()
-                            .with_child(
-                                self.create_custom_btn(String::from("Open"), move |ctx, _data: &mut AppState, _e| {
-                                        ctx.submit_command(druid::commands::SHOW_OPEN_PANEL.with(open_dialog_options.clone()));
-                                    }
-                                ))
-                            .with_child(
-                                self.create_custom_btn(String::from("Save"), move|ctx, _data, _e| {
-                                    ctx.submit_command(SAVE_TAB.to(TAB_ID));
-                                }))
-                            .with_child(
-                                self.create_custom_btn(String::from("New"), |ctx, data: &mut AppState, _e| {
-                                    data.advanced.add_empty_tab();
-                                    ctx.submit_command(SET_LAST_ACTIVE_TAB.to(TAB_ID));
-                                }))
-                            .with_child(
-                                self.create_custom_btn(String::from("Preview"),  |ctx, _data: &mut AppState, _e| {
-                                    ctx.submit_command(PREVIEW_TAB.to(TAB_ID));
-                                }))
-                            , 0.1)
-                        .with_flex_child(
-                            Tabs::for_policy(DynamicTabs)
-                                    .with_axis(Axis::Horizontal)
-                                    .with_edge(TabsEdge::Leading)
-                                    .with_transition(TabsTransition::Slide(
-                                        Duration::from_millis(100).as_nanos() as Nanos //Default::default()
-                                    ))
-                                    .controller(TabsControler)
-                                    .with_id(TAB_ID)
-                                    .lens(AppState::advanced)
-                            , 0.9)
-                    ),
-                1.0)
-    
+            Tabs::for_policy(DynamicTabs)
+                    .with_axis(Axis::Horizontal)
+                    .with_edge(TabsEdge::Leading)
+                    .with_transition(TabsTransition::Slide(
+                        Duration::from_millis(100).as_nanos() as Nanos //Default::default()
+                    ))
+                    .controller(TabsControler)
+                    .with_id(TAB_ID)
+                    .lens(AppState::advanced),
+            1.0)
     }
 
-    fn create_default_window(&self) -> Flex<AppState> {
+    #[allow(unused_assignments, unused_mut)]
+    fn make_menu(_window_id: Option<WindowId>, _app_state: &AppState, _env: &Env) -> Menu<AppState> {
         let open_dialog_options = UIBuilder::get_open_dialog_options();
-        Flex::column()
-            .with_flex_child(
-                Label::new("Open or create a new file")
-                        .with_text_size(24.)
-                        .center()
-                , 0.5)
-            .with_flex_child(
-                Flex::row()
-                    .with_flex_child(
-                        self.create_custom_btn(String::from("Open"), move |ctx, _data: &mut AppState, _e| 
+        let mut base = Menu::empty();
+        #[cfg(target_os = "macos")]
+        {
+            base = base.entry(
+                Menu::new("File")
+                    .entry(platform_menus::mac::file::new_file())
+                    .entry(
+                        MenuItem::new(LocalizedString::new("common-menu-file-open"))
+                            .on_activate(|ctx, _data: &mut AppState, _env| {
                                 ctx.submit_command(druid::commands::SHOW_OPEN_PANEL.with(open_dialog_options.clone()))
-                            )
-                        , 0.5)
-                    .with_flex_child(
-                        self.create_custom_btn(String::from("New"), |_ctx, data: &mut AppState, _e| 
-                            data.advanced.add_empty_tab()
-                        )
-                        , 0.5)
-            , 0.5)
-    }
-
-    fn create_custom_btn(&self, text: String, f: impl Fn(&mut EventCtx, &mut AppState, &Env) + 'static) -> ControllerHost<Align<AppState>, Click<AppState>> {
-        Label::new(text)
-            .with_text_size(24.)
-            .padding(6.)
-            .background(Painter::new(|ctx, _, env| {
-                let bounds = ctx.size().to_rect();
-        
-                ctx.fill(bounds, &env.get(theme::BACKGROUND_LIGHT));
-    
-                if ctx.is_hot() {
-                    ctx.stroke(bounds.inset(-0.5), &Color::WHITE, 1.0);
-                }
-        
-                if ctx.is_active() {
-                    ctx.fill(bounds, &Color::rgb8(0x71, 0x71, 0x71));
-                }
-            }))
-            .center()
-            .on_click(f)
+                            }).hotkey(SysMods::Cmd, "o")
+                    )
+                    .entry(platform_menus::mac::file::save())
+                    .entry(platform_menus::mac::file::save_as())
+                    .entry(
+                        MenuItem::new(LocalizedString::new("common-menu-file-save-as"))
+                            .on_activate(move |ctx, _data: &mut AppState, _env| {
+                                ctx.submit_command(SAVE_TAB.to(TAB_ID));
+                            })
+                            .hotkey(SysMods::CmdShift, "S")
+                    )
+                    .separator()
+                    .entry(platform_menus::mac::file::close())
+            );
+        }
+        #[cfg(any(
+            target_os = "windows",
+            target_os = "freebsd",
+            target_os = "linux",
+            target_os = "openbsd"
+        ))]
+        {
+            base = base.entry(
+                Menu::new(LocalizedString::new("common-menu-file-menu"))
+                    .entry(platform_menus::win::file::new())
+                    .entry(
+                        MenuItem::new(LocalizedString::new("common-menu-file-open"))
+                            .on_activate(move |ctx, _data: &mut AppState, _env| {
+                                ctx.submit_command(druid::commands::SHOW_OPEN_PANEL.with(open_dialog_options.clone()))
+                            }).hotkey(SysMods::Cmd, "o")
+                    )
+                    .entry(platform_menus::win::file::save())
+                    .entry(
+                        MenuItem::new(LocalizedString::new("common-menu-file-save-as"))
+                            .on_activate(|ctx, _data: &mut AppState, _env| {
+                                ctx.submit_command(SAVE_TAB.to(TAB_ID));
+                            }).hotkey(SysMods::CmdShift, "S")
+                    )
+                    .separator()
+                    .entry(platform_menus::win::file::exit())
+            );
+        }
+        base.entry(
+            MenuItem::new("Preview")
+            .on_activate(|ctx, _data: &mut AppState, _env| {
+                ctx.submit_command(PREVIEW_TAB.to(TAB_ID));
+            })
+            .hotkey(SysMods::Cmd, "p")
+        )
     }
     
     pub fn get_open_dialog_options() -> FileDialogOptions {
@@ -187,6 +179,23 @@ impl AppDelegate<AppState> for Delegate {
         data: &mut AppState,
         _env: &Env,
     ) -> Handled {
+        if let Some(_f) = cmd.get(commands::NEW_FILE) {
+            data.advanced.add_empty_tab();
+            ctx.submit_command(SET_LAST_ACTIVE_TAB.to(TAB_ID));
+            return Handled::Yes;
+        }
+        if let Some(_f) = cmd.get(commands::SAVE_FILE) {
+            let tab_data = data.advanced.tabs.get(data.advanced.current_tab).unwrap();
+            if  tab_data.file_path.len() > 0 {
+                let file_content = tab_data.content.clone();
+                if let Err(e) = std::fs::write(tab_data.file_path.clone(), file_content) {
+                    tracing::error!("Error writing file: {e}");
+                }
+            } else {
+                ctx.submit_command(SAVE_TAB.to(TAB_ID));
+            }
+            return Handled::Yes;
+        }
         if let Some(file_info) = cmd.get(commands::SAVE_FILE_AS) {
             let tab_data = data.advanced.tabs.get(data.advanced.current_tab).unwrap();
             let file_content = tab_data.content.clone();
@@ -201,7 +210,8 @@ impl AppDelegate<AppState> for Delegate {
                     data.advanced.add_tab(DynamicTabData {
                         is_svg: false,
                         name: file_info.path.file_name().unwrap().to_owned().to_str().unwrap().to_owned(),
-                        content: s
+                        content: s,
+                        file_path: file_info.path.to_str().unwrap().to_string()
                     });
                     ctx.submit_command(SET_LAST_ACTIVE_TAB.to(TAB_ID));
                 }

@@ -40,7 +40,8 @@ pub const TAB_ID: WidgetId = WidgetId::reserved(1);
 pub struct DynamicTabData {
     pub is_svg: bool,
     pub name: String,
-    pub content: String
+    pub content: String,
+    pub file_path: String,
 }
 
 #[derive(Data, Clone, Lens)]
@@ -91,7 +92,8 @@ impl DynamicTabsData {
             DynamicTabData {
                 is_svg: false,
                 name: String::from(format!("New ({})", empty_count+1)),
-                content: String::from("")
+                content: String::from(""),
+                file_path: String::from("")
             }
         );
     }
@@ -102,7 +104,8 @@ impl DynamicTabsData {
         let dynamic_tab_data = DynamicTabData {
             is_svg: true,
             name: svg_name.clone(),
-            content: String::from("")
+            content: String::from(""),
+            file_path: String::from("")
         };
         match self.get_index(svg_name.clone()) {
             Some(index) => {
@@ -212,9 +215,6 @@ impl Controller<DynamicTabsData, Tabs<DynamicTabs>> for TabsControler {
         env: &Env,
     ) {
         match event {
-            Event::Command(cmd) if cmd.is(ACTIVE_TAB) => {
-                data.current_tab = child.tab_index();
-            },
             Event::Command(cmd) if cmd.is(PREVIEW_TAB) => {
                 data.current_tab = child.tab_index();
                 let index = data.current_tab;

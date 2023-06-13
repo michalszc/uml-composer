@@ -1,3 +1,4 @@
+#[cfg(not(test))]
 pub mod gui;
 pub mod rules;
 pub mod uml_parser;
