@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::Read;
+use std::panic;
 
 use druid::im::Vector;
 use druid::widget::{
@@ -21,7 +22,8 @@ use druid::{
     Env,
     Widget,
     ImageBuf,
-    WidgetExt
+    WidgetExt,
+    Color
 };
 
 use crate::uml_parser::UmlParser;
@@ -42,6 +44,7 @@ pub struct DynamicTabData {
     pub name: String,
     pub content: String,
     pub file_path: String,
+    pub error: String
 }
 
 #[derive(Data, Clone, Lens)]
@@ -93,19 +96,21 @@ impl DynamicTabsData {
                 is_svg: false,
                 name: String::from(format!("New ({})", empty_count+1)),
                 content: String::from(""),
-                file_path: String::from("")
+                file_path: String::from(""),
+                error: String::from(""),
             }
         );
     }
 
-    pub fn add_svg_preview(&mut self, name: String) {
+    pub fn add_svg_preview(&mut self, name: String, error: String) {
         self.last_tab += 1;
         let svg_name = String::from(format!("SVG {}", name.replace(".uml", "")));
         let dynamic_tab_data = DynamicTabData {
             is_svg: true,
             name: svg_name.clone(),
             content: String::from(""),
-            file_path: String::from("")
+            file_path: String::from(""),
+            error
         };
         match self.get_index(svg_name.clone()) {
             Some(index) => {
@@ -178,11 +183,18 @@ impl TabsPolicy for DynamicTabs {
 
         Either::new(
             move |d: &DynamicTabsData, _| {
-                let index = d.get_index(key.clone()).unwrap();
                 let tab = d.tabs.get(index).unwrap();
                 tab.is_svg
             },
-            img,
+            Either::new(
+                                move |d: &DynamicTabsData, _| {
+                                let tab = d.tabs.get(index).unwrap();
+                                tab.error.len() > 0
+                            },
+                            Label::new(tab_data.error.clone())
+                                        .with_text_color(Color::RED),
+                            img
+                        ),
             TextEditor::new(tab_data.content.clone())
                             .expand()
         )
@@ -223,8 +235,26 @@ impl Controller<DynamicTabsData, Tabs<DynamicTabs>> for TabsControler {
                 data.current_tab = child.tab_index();
                 let index = data.current_tab;
                 let tab_data = data.tabs.get(index).unwrap();
-                UmlParser::parse(tab_data.content.clone().as_str());
-                data.add_svg_preview(tab_data.name.clone());
+                let result = panic::catch_unwind(|| {
+                    UmlParser::parse(tab_data.content.clone().as_str());
+                });
+                if result.is_ok() {
+                    println!("asd");
+                    data.add_svg_preview(tab_data.name.clone(), String::from(""));
+                } else {
+                    tracing::error!("Creating preview failed...");
+                    let error = result.err().unwrap();
+                    if let Some(err) = error.downcast_ref::<&str>() {
+                        // The panic value is a string
+                        data.add_svg_preview(tab_data.name.clone(), err.to_string());
+                    } else if let Some(err) = error.downcast_ref::<String>() {
+                        // The panic value is a String
+                        data.add_svg_preview(tab_data.name.clone(), err.to_string());
+                    } else {
+                        // Unknown panic value type
+                        data.add_svg_preview(tab_data.name.clone(), String::from("Unknown error occurred"));
+                    }
+                }
                 child.set_tab_index(data.current_tab);
             },
             Event::Command(cmd) if cmd.is(SAVE_TAB) => {

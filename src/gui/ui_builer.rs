@@ -220,7 +220,8 @@ impl AppDelegate<AppState> for Delegate {
                         is_svg: false,
                         name: file_info.path.file_name().unwrap().to_owned().to_str().unwrap().to_owned(),
                         content: s,
-                        file_path: file_info.path.to_str().unwrap().to_string()
+                        file_path: file_info.path.to_str().unwrap().to_string(),
+                        error: String::from("")
                     });
                     ctx.submit_command(SET_LAST_ACTIVE_TAB.to(TAB_ID));
                 }
