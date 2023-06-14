@@ -68,7 +68,7 @@ impl UmlParser {
                         match inner_pair.as_rule() {
                             Rule::start_activity => println!("{:?}", inner_pair),
                             Rule::ACTIVITY_BODY => {
-                                Activity::new(inner_pair).print();
+                                Activity::new(inner_pair).draw(&mut svg);
                             }
                             _ => unreachable!()
                         }
