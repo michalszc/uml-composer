@@ -127,18 +127,18 @@ impl Node {
 
                 let step = svg::node::element::Rectangle::new()
                     .set("x", x-25)
-                    .set("y", y)
+                    .set("y", y-25)
                     .set("width", (50.0*std::f64::consts::FRAC_1_SQRT_2) as usize)
                     .set("height", (50.0*std::f64::consts::FRAC_1_SQRT_2) as usize)
                     .set("fill", "white")
                     .set("stroke", "black")
                     .set("stroke-width", 3)
-                    .set("transform", format!("rotate({} {} {})", 45, x, y+25));
+                    .set("transform", format!("rotate({} {} {})", 45, x, y));
                 *svg = svg.clone().add(step);
 
                 let caption = svg::node::element::Text::new()
                     .set("x", x)
-                    .set("y", y-14)
+                    .set("y", y-39)
                     .set("text-anchor", "middle")
                     .set("dominant-baseline", "central")
                     .set("fill", "black")
