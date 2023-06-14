@@ -21,6 +21,9 @@ Cargo.lock
 # SVG
 *.svg
 
+# PNG 
+*.png
+
 # IDE settings
 .vscode
 .idea
