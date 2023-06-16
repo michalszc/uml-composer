@@ -3,6 +3,39 @@ use pest::iterators::Pair;
 use crate::grammar_parser::Rule;
 use svg;
 use std::collections::LinkedList;
+use svg::node::{
+    element::{
+        SVG, Definitions, Line, Marker, Polygon, Text as TextElement
+    },
+    Text
+};
+
+fn draw_line(x1: usize, y1: usize, x2: usize, y2: usize, svg: &mut SVG) {
+    let arrowhead = Marker::new()
+        .set("id", "arrowhead")
+        .set("markerWidth", "5")
+        .set("markerHeight", "5")
+        .set("refX", "0")
+        .set("refY", "3.5")
+        .set("orient", "auto")
+        .add(
+            Polygon::new()
+                .set("points", "0 1.5, 5 3.5, 0 5.5")
+        );
+
+    let mut line = Line::new()
+        .set("x1", x1)
+        .set("y1", y1)
+        .set("x2", x2)
+        .set("y2", y2)
+        .set("stroke", "#000")
+        .set("stroke-width", 8);
+
+    line = line.set("marker-end", "url(#arrowhead)");
+    let defs = Definitions::new().add(arrowhead);
+    *svg = svg.clone().add(defs);
+    *svg = svg.clone().add(line);
+}
 
 #[derive(PartialEq)]
 enum Type {
@@ -37,9 +70,16 @@ impl Condition {
         println!("}}");
     }
 
-    pub fn draw(&self, x: usize, y: usize, svg: &mut svg::node::element::SVG) {
-        self.main_path.draw(x+self.main_path.max_left()*250+250, y, svg);
-        self.alternative_path.draw(x-self.alternative_path.max_right()*250-250, y, svg)
+    pub fn draw(&self, x: usize, y: usize, svg: &mut SVG) {
+        let right_x = x+self.main_path.max_left()*250+250;
+        let right_width = self.main_path.nodes.front().unwrap().name.len()*16;
+        self.main_path.draw(right_x, y, svg);
+        draw_line(x+20,y-12,right_x-right_width-5, y-12, svg);
+
+        let left_x = x-self.alternative_path.max_right()*250-250;
+        let left_width = self.alternative_path.nodes.front().unwrap().name.len()*16;
+        self.alternative_path.draw(left_x, y, svg);
+        draw_line(x-20, y-12, left_x+left_width-25, y-12, svg);
     }
 
     pub fn get_left_depth(&self) -> usize {
@@ -120,10 +160,11 @@ impl Node {
         println!("Activity")
     }
 
-    pub fn draw(&self, x: usize, y: usize, svg: &mut svg::node::element::SVG) {
+    pub fn draw(&self, x: usize, y: usize, svg: &mut SVG) {
+        let width = self.name.len()*16;
         match self.kind {
             Type::IF => {
-                let name = svg::node::Text::new(self.name.as_str());
+                let name = Text::new(self.name.as_str());
 
                 let step = svg::node::element::Rectangle::new()
                     .set("x", x-25)
@@ -137,7 +178,7 @@ impl Node {
                 *svg = svg.clone().add(step);
 
                 let caption = svg::node::element::Text::new()
-                    .set("x", x)
+                    .set("x", x-width/2-8)
                     .set("y", y-39)
                     .set("text-anchor", "middle")
                     .set("dominant-baseline", "central")
@@ -147,9 +188,7 @@ impl Node {
                 *svg = svg.clone().add(caption);
             }
             Type::STEP => {
-                let name = svg::node::Text::new(self.name.as_str());
-
-                let width = self.name.len()*16;
+                let name = Text::new(self.name.as_str());
 
                 let step = svg::node::element::Rectangle::new()
                     .set("x", x-width/2)
@@ -253,18 +292,32 @@ impl Path {
         }
     }
 
-    pub fn draw(&self, x: usize, mut y: usize, svg: &mut svg::node::element::SVG) {
+    pub fn draw(&self, x: usize, mut y: usize, svg: &mut SVG) {
         let mut i:usize = 0;
+        let mut node_num: usize = 1;
         for node in self.nodes.iter() {
             node.draw(x, y, svg);
             if node.kind == Type::IF {
                 self.alternatives[i].draw(x,y,svg);
+                self.connect_last_node(x, y, i, svg);
                 y += self.alternatives[i].get_height();
                 i += 1;
+            } else if node.kind == Type::STEP {
+                if node_num != self.nodes.len(){
+                    draw_line(x, y+20, x, y+60, svg);
+                }
+                y += 130;
             } else {
                 y += 130;
             }
+            node_num += 1;
         }
+    }
+
+    fn connect_last_node(&self, x: usize, y: usize, i: usize, svg: &mut SVG) {
+        let y2 = y+self.alternatives[i].get_height();
+        let y1 = y2-130;
+        draw_line(x, y1, x, y2, svg)
     }
 
     pub fn get_left_depth(&self) -> usize {
@@ -361,7 +414,7 @@ impl Activity {
         self.path.print()
     }
 
-    pub fn draw(&self, svg: &mut svg::node::element::SVG) {
+    pub fn draw(&self, svg: &mut SVG) {
         println!("{}", self.path.max_left());
         println!("{}", self.path.max_right());
         let left = self.path.max_left()*250;
@@ -378,6 +431,7 @@ impl Activity {
             .set("r", 25);
         *svg = svg.clone().add(start);
 
+        draw_line(left+100, 50, left+100, 85, svg);
         self.path.draw(left+100, 155, svg)
     }
 }
