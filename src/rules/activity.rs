@@ -485,8 +485,6 @@ impl Activity {
     }
 
     pub fn draw(&self, svg: &mut SVG) {
-        println!("{}", self.path.max_left());
-        println!("{}", self.path.max_right());
         let left = self.path.max_left()*250;
         let right = self.path.max_right()*400;
         let width = left+right+200;
