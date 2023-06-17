@@ -80,6 +80,17 @@ impl Condition {
         let left_width = self.alternative_path.nodes.front().unwrap().name.len()*16;
         self.alternative_path.draw(left_x, y, svg);
         draw_line(x-20, y-12, left_x+left_width-25, y-12, svg);
+
+        self.bound_last_node(x, y, svg);
+    }
+
+    pub fn bound_last_node(&self, x2: usize, y: usize, svg: &mut SVG) {
+        // find last node
+        let x1 = x2+self.main_path.max_right()*250+250;
+        let y1 = y+self.main_path.get_height()-110;
+        let y2 = y+self.get_height()-40;
+
+        draw_line(x1, y1, x2+25, y2, svg);
     }
 
     pub fn get_left_depth(&self) -> usize {
@@ -299,7 +310,6 @@ impl Path {
             node.draw(x, y, svg);
             if node.kind == Type::IF {
                 self.alternatives[i].draw(x,y,svg);
-                self.connect_last_node(x, y, i, svg);
                 y += self.alternatives[i].get_height();
                 i += 1;
             } else if node.kind == Type::STEP {
@@ -312,12 +322,6 @@ impl Path {
             }
             node_num += 1;
         }
-    }
-
-    fn connect_last_node(&self, x: usize, y: usize, i: usize, svg: &mut SVG) {
-        let y2 = y+self.alternatives[i].get_height();
-        let y1 = y2-130;
-        draw_line(x, y1, x, y2, svg)
     }
 
     pub fn get_left_depth(&self) -> usize {
