@@ -10,7 +10,7 @@ use svg::node::{
     Text
 };
 
-fn draw_line(x1: usize, y1: usize, x2: usize, y2: usize, svg: &mut SVG) {
+fn draw_line(x1: usize, y1: usize, x2: usize, y2: usize, svg: &mut SVG, label: String) {
     let arrowhead = Marker::new()
         .set("id", "arrowhead")
         .set("markerWidth", "5")
@@ -20,7 +20,7 @@ fn draw_line(x1: usize, y1: usize, x2: usize, y2: usize, svg: &mut SVG) {
         .set("orient", "auto")
         .add(
             Polygon::new()
-                .set("points", "0 1.5, 5 3.5, 0 5.5")
+                .set("points", "-5 1.5, 0 3.5, -5 5.5")
         );
 
     let mut line = Line::new()
@@ -34,11 +34,36 @@ fn draw_line(x1: usize, y1: usize, x2: usize, y2: usize, svg: &mut SVG) {
     line = line.set("marker-end", "url(#arrowhead)");
     let defs = Definitions::new().add(arrowhead);
     *svg = svg.clone().add(defs);
+
+    // Calculate the angle of the line
+    let angle = ((y2 as f32 - y1 as f32) / (x2 as f32 - x1 as f32)).atan();
+
+    // Calculate the center point of the line
+    let center_x = (x1 + x2) / 2;
+    let center_y = (y1 + y2) / 2;
+
+    let text = Text::new(label.as_str());
+
+    // Create a text element
+    let text_element = TextElement::new()
+        .set("x", center_x - 20)
+        .set("y", center_y - 20)
+        .set("text-anchor", "middle")
+        .set("dominant-baseline", "central")
+        .set("fill", "black")
+        .set("font-size", 25)
+        .set("transform",
+             format!("rotate({} {} {})", angle.to_degrees(), center_x, center_y))
+        .add(text);
+
+    *svg = svg.clone().add(text_element);
+
     *svg = svg.clone().add(line);
 }
 
 #[derive(PartialEq)]
-enum Type {
+#[derive(Copy, Clone)]
+pub enum Type {
     STEP,
     IF,
     START,
@@ -52,8 +77,8 @@ pub struct Condition {
 
 impl Condition {
     pub fn new(if_st: Pair<Rule>, else_st: Pair<Rule>) -> Condition {
-        let main_path = Path::new(if_st);
-        let alternative_path = Path::new(else_st);
+        let main_path = Path::new(if_st, false);
+        let alternative_path = Path::new(else_st, false);
 
         Condition {
             main_path,
@@ -70,27 +95,37 @@ impl Condition {
         println!("}}");
     }
 
-    pub fn draw(&self, x: usize, y: usize, svg: &mut SVG) {
+    pub fn draw(&self, x: usize, y: usize, svg: &mut SVG, label: String) {
         let right_x = x+self.main_path.max_left()*250+250;
         let right_width = self.main_path.nodes.front().unwrap().name.len()*16;
         self.main_path.draw(right_x, y, svg);
-        draw_line(x+20,y-12,right_x-right_width-5, y-12, svg);
+        let arrow_label_r = self.main_path.nodes.front().unwrap().arrow_label.to_string();
+        draw_line(x+20,y-12,right_x-right_width/2, y-12, svg, arrow_label_r);
 
         let left_x = x-self.alternative_path.max_right()*250-250;
         let left_width = self.alternative_path.nodes.front().unwrap().name.len()*16;
         self.alternative_path.draw(left_x, y, svg);
-        draw_line(x-20, y-12, left_x+left_width-25, y-12, svg);
+        let arrow_label_l = self.alternative_path.nodes.front().unwrap().arrow_label.to_string();
+        draw_line(x-20, y-12, left_x+left_width/2, y-12, svg, arrow_label_l);
 
-        self.bound_last_node(x, y, svg);
+        self.bound_last_nodes(x, y, svg, label);
     }
 
-    pub fn bound_last_node(&self, x2: usize, y: usize, svg: &mut SVG) {
+    pub fn bound_last_nodes(&self, x2: usize, y: usize, svg: &mut SVG, label: String) {
         // find last node
-        let x1 = x2+self.main_path.max_right()*250+250;
-        let y1 = y+self.main_path.get_height()-110;
-        let y2 = y+self.get_height()-40;
+        let mut x1 = x2+self.main_path.max_right()*250+250;
+        let mut y1 = y+self.main_path.get_height()-110;
+        let y2 = y+self.get_height()-25;
 
-        draw_line(x1, y1, x2+25, y2, svg);
+        if self.main_path.get_last_node_type() != Type::END {
+            draw_line(x1, y1, x2, y2, svg, label.clone());
+        }
+
+        x1 = x2-self.alternative_path.max_right()*250-250;
+        y1 = y+self.alternative_path.get_height()-110;
+        if self.alternative_path.get_last_node_type() != Type::END {
+            draw_line(x1, y1, x2, y2, svg, label);
+        }
     }
 
     pub fn get_left_depth(&self) -> usize {
@@ -147,7 +182,10 @@ impl Node {
                 kind = Type::STEP;
                 let mut inner = value.into_inner();
                 inner.next(); // skip arrow
-                name = inner.next().unwrap().as_str().to_owned()
+                name = inner.next().unwrap().as_str().to_owned();
+                if inner.next() != None {
+                    arrow_label = inner.next().unwrap().as_str().to_owned();
+                }
             }
             _ => unreachable!()
         }
@@ -163,6 +201,14 @@ impl Node {
         Node {
             kind: Type::IF,
             name,
+            arrow_label: "".to_string()
+        }
+    }
+
+    pub fn start_node() -> Node {
+        Node {
+            kind: Type::START,
+            name: "".to_string(),
             arrow_label: "".to_string()
         }
     }
@@ -189,8 +235,8 @@ impl Node {
                 *svg = svg.clone().add(step);
 
                 let caption = svg::node::element::Text::new()
-                    .set("x", x-width/2-8)
-                    .set("y", y-39)
+                    .set("x", x)
+                    .set("y", y+39)
                     .set("text-anchor", "middle")
                     .set("dominant-baseline", "central")
                     .set("fill", "black")
@@ -238,7 +284,13 @@ impl Node {
                     .set("r", 20);
                 *svg = svg.clone().add(center);
             }
-            Type::START => unreachable!()
+            Type::START => {
+                let start = svg::node::element::Circle::new()
+                    .set("cx", x)
+                    .set("cy", y)
+                    .set("r", 25);
+                *svg = svg.clone().add(start);
+            }
         }
     }
 }
@@ -249,9 +301,13 @@ pub struct Path {
 }
 
 impl Path {
-    pub fn new(value: Pair<Rule>) -> Path {
+    pub fn new(value: Pair<Rule>, main: bool) -> Path {
         let mut nodes = LinkedList::new();
         let mut alternatives = Vec::new();
+
+        if main {
+            nodes.push_back(Node::start_node());
+        }
 
         for inner_pair in value.into_inner() {
             match inner_pair.as_rule() {
@@ -307,15 +363,17 @@ impl Path {
         let mut i:usize = 0;
         let mut node_num: usize = 1;
         for node in self.nodes.iter() {
+            if node_num != 1 && self.nodes.iter().nth(node_num-2).unwrap().kind != Type::IF {
+                let arrow_label = node.arrow_label.to_string();
+                draw_line(x, y-110, x, y-20, svg, arrow_label);
+            }
             node.draw(x, y, svg);
             if node.kind == Type::IF {
-                self.alternatives[i].draw(x,y,svg);
+                let label = self.nodes.iter().nth(node_num).unwrap().arrow_label.to_string();
+                self.alternatives[i].draw(x, y, svg, label);
                 y += self.alternatives[i].get_height();
                 i += 1;
             } else if node.kind == Type::STEP {
-                if node_num != self.nodes.len(){
-                    draw_line(x, y+20, x, y+60, svg);
-                }
                 y += 130;
             } else {
                 y += 130;
@@ -395,6 +453,14 @@ impl Path {
 
         return n
     }
+
+    pub fn get_last_node_type(&self) -> Type {
+        return if self.nodes.back().unwrap().kind == Type::IF {
+            self.alternatives.last().unwrap().main_path.get_last_node_type()
+        } else {
+            self.nodes.back().unwrap().kind
+        }
+    }
 }
 
 pub struct Activity {
@@ -407,7 +473,7 @@ impl Activity {
         inner.next();
         let p_body =  inner.next().unwrap();
 
-        let path = Path::new(p_body);
+        let path = Path::new(p_body, true);
 
         return Activity{
             path
@@ -429,13 +495,6 @@ impl Activity {
 
         *svg = svg.clone().set("viewBox", format!("0 0 {} {}", width, height));
 
-        let start = svg::node::element::Circle::new()
-            .set("cx", left+100)
-            .set("cy", 25)
-            .set("r", 25);
-        *svg = svg.clone().add(start);
-
-        draw_line(left+100, 50, left+100, 85, svg);
-        self.path.draw(left+100, 155, svg)
+        self.path.draw(left+100, 25, svg)
     }
 }
