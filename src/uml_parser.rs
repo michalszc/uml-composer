@@ -1,11 +1,13 @@
 use std::collections::{HashMap, HashSet};
+use std::{str, fs};
+use std::process::Command;
 use pest::Parser;
 use crate::rules::link::Link;
 use crate::rules::structs::Class;
 use crate::grammar_parser::{GrammarParser, Rule};
 use crate::rules::actor::Actor;
 use crate::rules::context::Context;
-use svg::{Document, node::element::SVG};
+use svg::{node::element::SVG};
 
 pub struct UmlParser {
 
@@ -105,7 +107,6 @@ impl UmlParser {
                 _ => unreachable!()
             }
         }
-
         let initial_height:usize = 500;
         let initial_width:usize = 500;
         let mut width = initial_width as usize;
@@ -321,8 +322,29 @@ impl UmlParser {
                 }
             }
         }
-
-        let document = Document::new().add(svg);
-        svg::save(file_name.clone() + ".svg", &document).unwrap();
+        svg::save("image.svg", &svg).unwrap();
+        let output = Command::new("rsvg-convert") 
+            .arg("-w")
+            .arg(format!("{width}"))
+            .arg("-h")
+            .arg(format!("{height}"))
+            .arg("-f")
+            .arg("png")
+            .arg("-o")
+            .arg("output.png")
+            .arg("image.svg")
+            .output()
+            .expect("Failed to execute command.");
+        match fs::remove_file("image.svg") { // removed unnecessary file
+            Ok(()) => tracing::info!("File image.svg removed successfully."),
+            Err(err) => tracing::info!("Failed to remove the file: {err}"),
+        }
+        if output.status.success() {
+            tracing::info!("Command executed successfully!");
+        } else {
+            let error_message = str::from_utf8(&output.stderr).unwrap_or("Unknown error");
+            tracing::error!("Command failed with error code: {}", output.status);
+            tracing::error!("Error message: {}", error_message);
+        }
     }
 }
