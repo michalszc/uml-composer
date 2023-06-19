@@ -32,7 +32,7 @@ impl UmlParser {
             panic!("Alias not found: {}", alias);
         }
     }
-    pub fn parse(value: &str, file_name: String) {
+    pub fn parse(value: &str) {
         let mut svg;
         let mut diagram = DiagramType::UseCaseDiagram;
 
