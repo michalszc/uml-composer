@@ -10,7 +10,11 @@ use svg::node::{
 #[derive(Debug, PartialEq, Eq)]
 pub struct UseCase {
     label: String,
-    alias: String
+    alias: String,
+    x: i32,
+    y: i32,
+    width_number: i32,
+    width: i32
 }
 
 impl UseCase {
@@ -19,7 +23,7 @@ impl UseCase {
         let label;
         let alias;
 
-        inner.next(); // skip 'usecase'
+        inner.next(); // skip 'use case'
         let l = inner.next().unwrap();
 
         match l.as_rule() {
@@ -36,10 +40,18 @@ impl UseCase {
             }
             _ => unreachable!()
         }
+        let x = -1;
+        let y = -1;
+        let width_number = 1;
+        let width = 100;
 
         UseCase {
             label,
-            alias
+            alias,
+            x,
+            y,
+            width_number,
+            width
         }
     }
 
@@ -47,29 +59,54 @@ impl UseCase {
 
     pub fn get_use_case_alias(&self) -> &String {&self.alias}
 
-    pub fn print(&self) {
-        println!("Use Case label: {:?} Use Case alias: {:?}",
-                 self.label, self.alias);
+    pub fn get_x(&self) -> i32 {
+        self.x
     }
 
-    pub fn draw(&self, svg: &mut SVG, x: i32, y: i32, width: i32, height: i32) {
+    pub fn get_y(&self) -> i32 {
+        self.y
+    }
+
+    pub fn get_width(&self) -> i32 {
+        self.width
+    }
+
+    pub fn get_width_number(&self) -> i32 {
+        self.width_number
+    }
+
+    pub fn set_width_number(&mut self, width: i32) {
+        self.width_number = width;
+    }
+
+    pub fn print(&self) {
+        println!("Use Case label: {:?} Use Case alias: {:?} x: {} y: {} width_number: {}",
+                 self.label, self.alias, self.x, self.y, self.width_number);
+    }
+
+
+    pub fn draw(&mut self, svg: &mut SVG, x: i32, y: i32, width: i32, height: i32) {
+        self.x = x; // middle of the ellipse
+        self.y = y; // middle of the ellipse
         let text_size = 20;
         let text_element = TextElement::new()
-            .set("x", (x + width / 2).to_string())
-            .set("y", (y + height / 2 + text_size / 3).to_string())
+            .set("x", (x).to_string())
+            .set("y", (y + text_size / 3).to_string())
             .set("text-anchor", "middle")
             .set("dominant-baseline", "central")
             .set("fill", "black")
+            .set("font-family", "Arial")
             .set("font-size", text_size)
             .add(Text::new(self.label.clone().as_str()));
 
         let text_width = self.label.len() as f64 * (text_size as f64 * 0.6); // Adjust the multiplier as needed
 
         let ellipse_width = f64::max(width as f64, text_width + 20.0); // Add some padding
+        self.width = ellipse_width as i32;
 
         let ellipse = Ellipse::new()
-            .set("cx", (x + width / 2).to_string())
-            .set("cy", (y + height / 2).to_string())
+            .set("cx", (x).to_string())
+            .set("cy", (y).to_string())
             .set("rx", (ellipse_width / 2.0).to_string()) // Adjusted width
             .set("ry", (height / 2).to_string())
             .set("fill", "blue") // Blue color
