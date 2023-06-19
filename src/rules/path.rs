@@ -92,6 +92,10 @@ impl Condition {
     pub fn get_height(&self) -> usize {
         return cmp::max(self.main_path.get_height(), self.alternative_path.get_height())
     }
+
+    pub fn nodes_count(&self) -> usize {
+        return self.main_path.nodes_count()+self.alternative_path.nodes_count();
+    }
 }
 
 pub struct Path {
@@ -259,5 +263,16 @@ impl Path {
         } else {
             self.nodes.back().unwrap().get_kind()
         }
+    }
+
+    pub fn nodes_count(&self) -> usize {
+        let mut n = 0;
+        n += self.nodes.len();
+
+        for alternative in &self.alternatives {
+            n += alternative.nodes_count()
+        }
+
+        n
     }
 }

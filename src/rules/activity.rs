@@ -37,4 +37,8 @@ impl Activity {
 
         self.path.draw(left+100, 25, svg)
     }
+
+    pub fn nodes_count(&self) -> usize {
+        self.path.nodes_count()
+    }
 }
