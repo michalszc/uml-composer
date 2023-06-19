@@ -6,7 +6,20 @@ mod activity_test {
 
     #[test]
     fn nodes_count() {
-        let input="@startuml activity\n\n(*) --> step1\n--> step2 : tak\n--> stepnew : opis\nif condition1 {\n\t--> alt1 : tekst\n\t--> alt11\n} else {\n\t-->another1\n}\n--> step3:caption -->(^)\n\n@enduml";
+        let input="@startuml activity
+
+(*) --> step1
+--> step2 : tak
+--> stepnew : opis
+if condition1 {
+    --> alt1 : tekst
+    --> alt11
+} else {
+    -->another1
+}
+--> step3:caption -->(^)
+
+@enduml";
         let diagram = GrammarParser::parse(Rule::PROGRAM, input)
             .unwrap_or_else(|e| panic!("{}", e))
             .next().unwrap();
@@ -28,4 +41,46 @@ mod activity_test {
             }
         }
     }
+
+    #[test]
+    fn draws_step() {
+        let mut svg = SVG::new();
+        let input="@startuml activity
+
+(*) --> step1
+--> step2 : tak
+--> stepnew : opis
+if condition1 {
+    --> alt1 : tekst
+    --> alt11
+} else {
+    -->another1
+}
+--> step3:caption -->(^)
+
+@enduml";
+        let diagram = GrammarParser::parse(Rule::PROGRAM, input)
+            .unwrap_or_else(|e| panic!("{}", e))
+            .next().unwrap();
+        for pair in diagram.into_inner() {
+            match pair.as_rule() {
+                Rule::ACTIVITY_DIAGRAM => {
+                    for inner_pair in pair.into_inner(){
+                        match inner_pair.as_rule() {
+                            Rule::start_activity => {}
+                            Rule::ACTIVITY_BODY => {
+                                Activity::new(inner_pair).draw(&mut svg);
+                                let response = svg.to_string();
+                                assert_eq!(response.contains("<text dominant-baseline=\"central\" fill=\"black\" font-size=\"28\" text-anchor=\"middle\" x=\"350\" y=\"415\">\nstepnew\n</text>"), true)
+                            }
+                            _ => unreachable!()
+                        }
+                    }
+                }
+                Rule::end_uml => {},
+                _ => panic!("{}", pair.to_string())
+            }
+        }
+    }
+
 }
