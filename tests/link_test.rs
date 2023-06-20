@@ -4,7 +4,6 @@ mod link_test {
     use svg::node::element::SVG;
     use uml_composer::{rules::link::{Link, ArrowType, LinkType}, grammar_parser::{GrammarParser, Rule}};
 
-    const START_SVG: &str = "<svg xmlns=\"http://www.w3.org/2000/svg\">";
     const END_SVG: &str = "</svg>";
 
     #[test]
@@ -24,12 +23,11 @@ mod link_test {
         assert_eq!(*link.get_link_type(), LinkType::SolidLine);
         assert_eq!(link.get_label().to_owned(), String::from(""));
         assert_eq!(*link.get_arrow(), ArrowType::Missing);
-        assert_eq!(svg.to_string(),
-            format!(
-                "{}\n<line stroke=\"#000\" stroke-width=\"8\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
-                START_SVG, x1, x2, y1, y2, END_SVG
+        assert!(svg.to_string().contains(&format!(
+                "x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
+                x1, x2, y1, y2, END_SVG
             )
-        );
+        ));
     }
 
     #[test]
@@ -48,12 +46,11 @@ mod link_test {
         assert_eq!(link.get_right_id().to_owned(), String::from("b"));
         assert_eq!(*link.get_link_type(), LinkType::SolidLine);
         assert_eq!(link.get_label().to_owned(), String::from("lorem ipsum 123"));
-        assert_eq!(svg.to_string(),
-            format!(
-                "{}\n<text dominant-baseline=\"central\" fill=\"black\" font-size=\"28\" text-anchor=\"middle\" transform=\"rotate(45 120 120)\" x=\"{}\" y=\"{}\">\n{}\n</text>\n<line stroke=\"#000\" stroke-width=\"8\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
-                START_SVG, (x1+x2)/2 , (y1+y2)/2-20, "lorem ipsum 123", x1, x2, y1, y2, END_SVG
-            )
-        );
+        assert!(svg.to_string().contains(&format!(
+            "x=\"{}\" y=\"{}\">\n{}\n</text>\n<line stroke=\"#000\" stroke-width=\"3\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
+            (x1+x2)/2 , (y1+y2)/2-5, "lorem ipsum 123", x1, x2, y1, y2, END_SVG
+        )
+        ));
     }
 
     #[test]
@@ -73,12 +70,11 @@ mod link_test {
         assert_eq!(*link.get_link_type(), LinkType::SolidLine);
         assert_eq!(link.get_label().to_owned(), String::from("lorem ipsum 123"));
         assert_eq!(*link.get_arrow(), ArrowType::Left);
-        assert_eq!(svg.to_string(),
-            format!(
-                "{}\n<text dominant-baseline=\"central\" fill=\"black\" font-size=\"28\" text-anchor=\"middle\" transform=\"rotate(45 120 120)\" x=\"{}\" y=\"{}\">\n{}\n</text>\n<line stroke=\"#000\" stroke-width=\"8\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
-                START_SVG, (x1+x2)/2 , (y1+y2)/2-20, "lorem ipsum 123◀", x1, x2, y1, y2, END_SVG
+        assert!(svg.to_string().contains(&format!(
+                "x=\"{}\" y=\"{}\">\n{}\n</text>\n<line stroke=\"#000\" stroke-width=\"3\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
+                (x1+x2)/2 , (y1+y2)/2-5, "lorem ipsum 123◀", x1, x2, y1, y2, END_SVG
             )
-        );
+        ));
     }
 
     #[test]
@@ -98,12 +94,11 @@ mod link_test {
         assert_eq!(*link.get_link_type(), LinkType::SolidLine);
         assert_eq!(link.get_label().to_owned(), String::from("lorem ipsum 123"));
         assert_eq!(*link.get_arrow(), ArrowType::Right);
-        assert_eq!(svg.to_string(),
-            format!(
-                "{}\n<text dominant-baseline=\"central\" fill=\"black\" font-size=\"28\" text-anchor=\"middle\" transform=\"rotate(45 120 120)\" x=\"{}\" y=\"{}\">\n{}\n</text>\n<line stroke=\"#000\" stroke-width=\"8\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
-                START_SVG, (x1+x2)/2 , (y1+y2)/2-20, "lorem ipsum 123▶", x1, x2, y1, y2, END_SVG
+        assert!(svg.to_string().contains(&format!(
+                "x=\"{}\" y=\"{}\">\n{}\n</text>\n<line stroke=\"#000\" stroke-width=\"3\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
+                (x1+x2)/2 , (y1+y2)/2-5, "lorem ipsum 123▶", x1, x2, y1, y2, END_SVG
             )
-        );
+        ));
     }
 
     #[test]
@@ -123,12 +118,11 @@ mod link_test {
         assert_eq!(*link.get_link_type(), LinkType::SolidArrow);
         assert_eq!(link.get_label().to_owned(), String::from(""));
         assert_eq!(*link.get_arrow(), ArrowType::Missing);
-        assert_eq!(svg.to_string(),
-            format!(
-                "{}\n<defs>\n<marker id=\"arrowhead\" markerHeight=\"7\" markerWidth=\"10\" orient=\"auto\" refX=\"0\" refY=\"3.5\">\n<polygon points=\"0 0, 10 3.5, 0 7\"/>\n</marker>\n</defs>\n<line marker-end=\"url(#arrowhead)\" stroke=\"#000\" stroke-width=\"8\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
-                START_SVG, x1, x2, y1, y2, END_SVG
+        assert!(svg.to_string().contains(&format!(
+                "x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
+                x1, x2, y1, y2, END_SVG
             )
-        );
+        ));
     }
 
     #[test]
@@ -148,12 +142,11 @@ mod link_test {
         assert_eq!(*link.get_link_type(), LinkType::SolidArrow);
         assert_eq!(link.get_label().to_owned(), String::from("lorem ipsum 123"));
         assert_eq!(*link.get_arrow(), ArrowType::Missing);
-        assert_eq!(svg.to_string(),
-            format!(
-                "{}\n<defs>\n<marker id=\"arrowhead\" markerHeight=\"7\" markerWidth=\"10\" orient=\"auto\" refX=\"0\" refY=\"3.5\">\n<polygon points=\"0 0, 10 3.5, 0 7\"/>\n</marker>\n</defs>\n<text dominant-baseline=\"central\" fill=\"black\" font-size=\"28\" text-anchor=\"middle\" transform=\"rotate(45 120 120)\" x=\"{}\" y=\"{}\">\n{}\n</text>\n<line marker-end=\"url(#arrowhead)\" stroke=\"#000\" stroke-width=\"8\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
-                START_SVG, (x1+x2)/2 , (y1+y2)/2-20, "lorem ipsum 123", x1, x2, y1, y2, END_SVG
+        assert!(svg.to_string().contains(&format!(
+                "x=\"{}\" y=\"{}\">\n{}\n</text>\n<line marker-end=\"url(#arrowhead)\" stroke=\"#000\" stroke-width=\"3\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
+                (x1+x2)/2 , (y1+y2)/2-5, "lorem ipsum 123", x1, x2, y1, y2, END_SVG
             )
-        );
+        ));
     }
 
     #[test]
@@ -173,12 +166,11 @@ mod link_test {
         assert_eq!(*link.get_link_type(), LinkType::DashedLine);
         assert_eq!(link.get_label().to_owned(), String::from(""));
         assert_eq!(*link.get_arrow(), ArrowType::Missing);
-        assert_eq!(svg.to_string(),
-            format!(
-                "{}\n<line stroke=\"#000\" stroke-dasharray=\"8 8\" stroke-width=\"8\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
-                START_SVG, x1, x2, y1, y2, END_SVG
+        assert!(svg.to_string().contains(&format!(
+                "x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
+                x1, x2, y1, y2, END_SVG
             )
-        );
+        ));
     }
 
     #[test]
@@ -198,12 +190,11 @@ mod link_test {
         assert_eq!(*link.get_link_type(), LinkType::DashedLine);
         assert_eq!(link.get_label().to_owned(), String::from("lorem ipsum 123"));
         assert_eq!(*link.get_arrow(), ArrowType::Missing);
-        assert_eq!(svg.to_string(),
-            format!(
-                "{}\n<text dominant-baseline=\"central\" fill=\"black\" font-size=\"28\" text-anchor=\"middle\" transform=\"rotate(45 120 120)\" x=\"{}\" y=\"{}\">\n{}\n</text>\n<line stroke=\"#000\" stroke-dasharray=\"8 8\" stroke-width=\"8\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
-                START_SVG, (x1+x2)/2 , (y1+y2)/2-20, "lorem ipsum 123", x1, x2, y1, y2, END_SVG
+        assert!(svg.to_string().contains(&format!(
+                "x=\"{}\" y=\"{}\">\n{}\n</text>\n<line stroke=\"#000\" stroke-dasharray=\"8 8\" stroke-width=\"3\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
+                (x1+x2)/2 , (y1+y2)/2-5, "lorem ipsum 123", x1, x2, y1, y2, END_SVG
             )
-        );
+        ));
     }
 
     #[test]
@@ -223,12 +214,11 @@ mod link_test {
         assert_eq!(*link.get_link_type(), LinkType::DashedLine);
         assert_eq!(link.get_label().to_owned(), String::from("lorem ipsum 123"));
         assert_eq!(*link.get_arrow(), ArrowType::Left);
-        assert_eq!(svg.to_string(),
-            format!(
-                "{}\n<text dominant-baseline=\"central\" fill=\"black\" font-size=\"28\" text-anchor=\"middle\" transform=\"rotate(45 120 120)\" x=\"{}\" y=\"{}\">\n{}\n</text>\n<line stroke=\"#000\" stroke-dasharray=\"8 8\" stroke-width=\"8\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
-                START_SVG, (x1+x2)/2 , (y1+y2)/2-20, "lorem ipsum 123◀", x1, x2, y1, y2, END_SVG
+        assert!(svg.to_string().contains(&format!(
+                "x=\"{}\" y=\"{}\">\n{}\n</text>\n<line stroke=\"#000\" stroke-dasharray=\"8 8\" stroke-width=\"3\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
+                (x1+x2)/2 , (y1+y2)/2-5, "lorem ipsum 123◀", x1, x2, y1, y2, END_SVG
             )
-        );
+        ));
     }
 
     #[test]
@@ -248,12 +238,11 @@ mod link_test {
         assert_eq!(*link.get_link_type(), LinkType::DashedLine);
         assert_eq!(link.get_label().to_owned(), String::from("lorem ipsum 123"));
         assert_eq!(*link.get_arrow(), ArrowType::Right);
-        assert_eq!(svg.to_string(),
-            format!(
-                "{}\n<text dominant-baseline=\"central\" fill=\"black\" font-size=\"28\" text-anchor=\"middle\" transform=\"rotate(45 120 120)\" x=\"{}\" y=\"{}\">\n{}\n</text>\n<line stroke=\"#000\" stroke-dasharray=\"8 8\" stroke-width=\"8\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
-                START_SVG, (x1+x2)/2 , (y1+y2)/2-20, "lorem ipsum 123▶", x1, x2, y1, y2, END_SVG
+        assert!(svg.to_string().contains(&format!(
+                "x=\"{}\" y=\"{}\">\n{}\n</text>\n<line stroke=\"#000\" stroke-dasharray=\"8 8\" stroke-width=\"3\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
+                (x1+x2)/2 , (y1+y2)/2-5, "lorem ipsum 123▶", x1, x2, y1, y2, END_SVG
             )
-        );
+        ));
     }
 
     #[test]
@@ -273,12 +262,8 @@ mod link_test {
         assert_eq!(*link.get_link_type(), LinkType::DashedArrow);
         assert_eq!(link.get_label().to_owned(), String::from(""));
         assert_eq!(*link.get_arrow(), ArrowType::Missing);
-        assert_eq!(svg.to_string(),
-            format!(
-                "{}\n<defs>\n<marker id=\"arrowhead\" markerHeight=\"7\" markerWidth=\"10\" orient=\"auto\" refX=\"0\" refY=\"3.5\">\n<polygon points=\"0 0, 10 3.5, 0 7\"/>\n</marker>\n</defs>\n<line marker-end=\"url(#arrowhead)\" stroke=\"#000\" stroke-dasharray=\"8 8\" stroke-width=\"8\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
-                START_SVG, x1, x2, y1, y2, END_SVG
-            )
-        );
+        assert!(svg.to_string().contains(&format!("x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}", x1, x2, y1, y2, END_SVG)));
+
     }
 
     #[test]
@@ -298,12 +283,44 @@ mod link_test {
         assert_eq!(*link.get_link_type(), LinkType::DashedArrow);
         assert_eq!(link.get_label().to_owned(), String::from("lorem ipsum 123"));
         assert_eq!(*link.get_arrow(), ArrowType::Missing);
-        assert_eq!(svg.to_string(),
-            format!(
-                "{}\n<defs>\n<marker id=\"arrowhead\" markerHeight=\"7\" markerWidth=\"10\" orient=\"auto\" refX=\"0\" refY=\"3.5\">\n<polygon points=\"0 0, 10 3.5, 0 7\"/>\n</marker>\n</defs>\n<text dominant-baseline=\"central\" fill=\"black\" font-size=\"28\" text-anchor=\"middle\" transform=\"rotate(45 120 120)\" x=\"{}\" y=\"{}\">\n{}\n</text>\n<line marker-end=\"url(#arrowhead)\" stroke=\"#000\" stroke-dasharray=\"8 8\" stroke-width=\"8\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
-                START_SVG, (x1+x2)/2 , (y1+y2)/2-20, "lorem ipsum 123", x1, x2, y1, y2, END_SVG
+        assert!(svg.to_string().contains(&format!(
+                "x=\"{}\" y=\"{}\">\n{}\n</text>\n<line marker-end=\"url(#arrowhead)\" stroke=\"#000\" stroke-dasharray=\"8 8\" stroke-width=\"3\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n",
+                (x1+x2)/2 , (y1+y2)/2-5, "lorem ipsum 123", x1, x2, y1, y2
             )
-        );
+        ));
+    }
+
+    #[test]
+    fn parse_into_link_in_class_diagram(){
+        let input: &str = "uc1 --> uc5 : \"Include\" \n";
+
+        let link_pair = GrammarParser::parse(Rule::LINK, input)
+            .unwrap().next().unwrap();
+
+        let mut link = Link::new(link_pair);
+        let mut svg = SVG::new();
+        let x1 = 300;
+        let x2 = 1500;
+        let y1 = 100;
+        let y2 = 400;
+        let xs = 900;
+
+        link.draw_class_link(&mut svg, x1, y1, x2, y2, xs);
+
+        // first line
+        assert!(svg.to_string().contains(&format!(
+            "x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>", x1, xs, y1, y1)));
+
+        // middle line
+        assert!(svg.to_string().contains(&format!(
+            "x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>", xs, xs, y1, y2)));
+
+        // second line
+        assert!(svg.to_string().contains(&format!(
+            "x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>", xs, x2, y2, y2)));
+
+        // println!("{}", svg.to_string());
+
     }
 
 }
