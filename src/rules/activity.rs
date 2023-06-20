@@ -28,14 +28,24 @@ impl Activity {
 
     pub fn draw(&self, svg: &mut SVG) {
         let left = self.path.max_left()*250;
-        let right = self.path.max_right()*400;
-        let width = left+right+200;
 
-        let  height = self.path.get_height()+50;
-
-        *svg = svg.clone().set("viewBox", format!("0 0 {} {}", width, height));
+        let rect = svg::node::element::Rectangle::new()
+            .set("width", "100%")
+            .set("height", "100%")
+            .set("fill", "white");
+        *svg = svg.clone().add(rect);
 
         self.path.draw(left+100, 25, svg)
+    }
+
+    pub fn width(&self) -> usize {
+        let left = self.path.max_left()*250;
+        let right = self.path.max_right()*400;
+        left+right+200
+    }
+
+    pub fn height(&self) -> usize {
+        self.path.get_height()+50
     }
 
     pub fn nodes_count(&self) -> usize {

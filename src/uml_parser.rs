@@ -8,7 +8,7 @@ use crate::grammar_parser::{GrammarParser, Rule};
 use crate::rules::actor::Actor;
 use crate::rules::context::Context;
 use crate::rules::activity::Activity;
-use svg::{Document, node::element::SVG};
+use svg::node::element::{Rectangle, SVG};
 
 pub struct UmlParser {
 
@@ -17,6 +17,7 @@ pub struct UmlParser {
 enum DiagramType {
     ClassDiagram,
     UseCaseDiagram,
+    ActivityDiagram
 }
 
 
@@ -34,6 +35,11 @@ impl UmlParser {
         }
     }
     pub fn parse(value: &str) {
+        let initial_height:usize = 500;
+        let initial_width:usize = 500;
+        let mut width = initial_width as usize;
+        let mut height = initial_height as usize;
+
         let mut svg;
         let mut diagram = DiagramType::UseCaseDiagram;
 
@@ -42,6 +48,8 @@ impl UmlParser {
         let mut links: Vec<Link> = Vec::new();
         let mut classes: Vec<Class> = Vec::new();
         let mut aliases: HashSet<String> = HashSet::new();
+
+        let mut activities = Vec::new();
 
         let _actor_length;
         let _context_length;
@@ -105,11 +113,15 @@ impl UmlParser {
                     }
                 }
                 Rule::ACTIVITY_DIAGRAM => {
+                    diagram = DiagramType::ActivityDiagram;
                     for inner_pair in pair.into_inner(){
                         match inner_pair.as_rule() {
-                            Rule::start_activity => println!("{:?}", inner_pair),
+                            Rule::start_activity => {}
                             Rule::ACTIVITY_BODY => {
-                                Activity::new(inner_pair).draw(&mut svg);
+                                let activity = Activity::new(inner_pair);
+                                width = activity.width();
+                                height = activity.height();
+                                activities.push(activity);
                             }
                             _ => unreachable!()
                         }
@@ -119,10 +131,7 @@ impl UmlParser {
                 _ => unreachable!()
             }
         }
-        let initial_height:usize = 500;
-        let initial_width:usize = 500;
-        let mut width = initial_width as usize;
-        let height;
+
 
         match diagram {
             DiagramType::ClassDiagram => {
@@ -134,6 +143,11 @@ impl UmlParser {
                 height = class_size * ((_classes_length + 1) / 2);
 
                 svg = SVG::new().set("viewBox", format!("0 0 {} {}", width, height));
+                let rect = Rectangle::new()
+                    .set("width", "100%")
+                    .set("height", "100%")
+                    .set("fill", "white");
+                svg = svg.clone().add(rect);
                 let mut y_column1 = 25; // Y coordinate of classes that appear in the first column
                 let mut y_column2 = 50; // Y coordinate of classes that appear in the second column
 
@@ -292,6 +306,11 @@ impl UmlParser {
                 // create ready svg
                 svg = SVG::new().set("viewBox", format!("0 0 {} {}", width + 10, height))
                     .set("style", "background-color: green");
+                let rect = Rectangle::new()
+                    .set("width", "100%")
+                    .set("height", "100%")
+                    .set("fill", "white");
+                svg = svg.clone().add(rect);
 
                 for context in &mut contexts {
                     context.draw(&mut svg, 2 * x_actor, y_context, 350 * context.get_width_number(), 350);
@@ -331,6 +350,13 @@ impl UmlParser {
                     if !(left_x == -1 || left_y == -1 || right_x == -1 || right_y == -1) {
                         link.draw(&mut svg, left_x, left_y, right_x, right_y);
                     }
+                }
+            }
+            DiagramType::ActivityDiagram => {
+                svg = SVG::new()
+                    .set("viewBox", format!("0 0 {} {}", width, height));
+                for activity in activities {
+                    activity.draw(&mut svg);
                 }
             }
         }
