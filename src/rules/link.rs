@@ -95,37 +95,37 @@ impl Link {
         &self.arrow
     }
 
+    pub fn set_arrow(&mut self, arrow: ArrowType) { self.arrow = arrow; }
+
+    pub fn set_link_type(&mut self, link_type: LinkType) { self.link_type = link_type; }
+
     pub fn print(&self) {
         println!("Left: {:?} Link: {:?} Right: {:?} Label: {:?} Arrow: {:?}",
             self.left_id, self.link_type, self.right_id, self.label, self.arrow);
     }
 
     pub fn draw(&self, svg: &mut SVG, x1: i32, y1: i32, x2: i32, y2: i32) {
+        let line_weight = 3;
+        let text_size = line_weight * 6;
         let arrowhead = Marker::new()
             .set("id", "arrowhead")
-            .set("markerWidth", "10")
-            .set("markerHeight", "7")
+            .set("markerWidth", "5")   // Adjust the width to make it smaller
+            .set("markerHeight", "3.5")  // Adjust the height to make it smaller
             .set("refX", "0")
-            .set("refY", "3.5")
+            .set("refY", "1.75")  // Adjust the reference point to center the arrowhead
             .set("orient", "auto")
             .add(
                 Polygon::new()
-                    .set("points", "0 0, 10 3.5, 0 7")
+                    .set("points", "-5 0, 0 1.75, -5 3.5")  // Adjust the points to fit the new dimensions
             );
 
-        let mut line = Line::new()
-            .set("x1", x1.to_string())
-            .set("y1", y1.to_string())
-            .set("x2", x2.to_string())
-            .set("y2", y2.to_string())
-            .set("stroke", "#000")
-            .set("stroke-width", "8");
+        let mut line = self.draw_line(x1, y1, x2, y2, line_weight);
         
         if self.link_type == LinkType::DashedLine || self.link_type == LinkType::DashedArrow {
             line = line.set("stroke-dasharray", "8 8");
         }
 
-        if self.link_type == LinkType::SolidArrow || self.link_type == LinkType::DashedArrow {
+        if self.link_type == LinkType::SolidArrow || self.link_type == LinkType::DashedArrow{
             line = line.set("marker-end", "url(#arrowhead)");
             let defs = Definitions::new().add(arrowhead);
             *svg = svg.clone().add(defs);
@@ -152,11 +152,12 @@ impl Link {
             // Create a text element
             let text_element = TextElement::new()
                 .set("x", center_x)
-                .set("y", center_y - 20)
+                .set("y", center_y - 5)
                 .set("text-anchor", "middle")
                 .set("dominant-baseline", "central")
                 .set("fill", "black")
-                .set("font-size", 28)
+                .set("font-family", "Arial")
+                .set("font-size", text_size)
                 .set("transform", 
                     format!("rotate({} {} {})", angle.to_degrees(), center_x, center_y))
                 .add(text);
@@ -166,4 +167,66 @@ impl Link {
 
         *svg = svg.clone().add(line);
     }
+    pub fn draw_class_link(&mut self, svg: &mut SVG, x1: i32, y1: i32, x2: i32, y2: i32, xs: i32) {
+        let line_weight = 3; // thickness of the line
+
+        if *self.get_link_type() == LinkType::DashedArrow {
+            self.set_link_type(LinkType::DashedLine);
+            self.draw(svg, xs, y1, xs, y2);
+            self.set_link_type(LinkType::DashedArrow);
+        }
+
+        else if *self.get_link_type() == LinkType::SolidArrow {
+            self.set_link_type(LinkType::SolidLine);
+            self.draw(svg, xs, y1, xs, y2);
+            self.set_link_type(LinkType::SolidArrow);
+        }
+        else {
+            self.draw(svg, xs, y1, xs, y2); // middle line
+        }
+
+        let mut line1 = self.draw_line(x1, y1, xs, y1, line_weight);
+
+        if self.link_type == LinkType::DashedLine || self.link_type == LinkType::DashedArrow {
+            line1 = line1.set("stroke-dasharray", "8 8");
+        }
+        let mut line2 = self.draw_line(xs, y2, x2, y2, line_weight);
+
+        if self.link_type == LinkType::DashedLine || self.link_type == LinkType::DashedArrow {
+            line2 = line2.set("stroke-dasharray", "8 8");
+        }
+        let arrowhead = Marker::new()
+            .set("id", "arrowhead")
+            .set("markerWidth", "10")   // Adjust the width to make it smaller
+            .set("markerHeight", "7")  // Adjust the height to make it smaller
+            .set("refX", "0")
+            .set("refY", "1.75")  // Adjust the reference point to center the arrowhead
+            .set("orient", "auto")
+            .add(
+                Polygon::new()
+                    .set("points", "-10 -5.25, 0 1.75, -10 8.75")  // Adjust the points to fit the new dimensions
+            );
+
+        if self.link_type == LinkType::SolidArrow || self.link_type == LinkType::DashedArrow{
+            line2 = line2.set("marker-end", "url(#arrowhead)");
+            let defs = Definitions::new().add(arrowhead);
+            *svg = svg.clone().add(defs);
+        }
+
+        *svg = svg.clone().add(line1);
+        *svg = svg.clone().add(line2);
+    }
+
+    pub fn draw_line(&self, x1: i32, y1: i32, x2: i32, y2: i32, line_weight: i32) -> Line {
+        let line = Line::new()
+            .set("x1", x1.to_string())
+            .set("y1", y1.to_string())
+            .set("x2", x2.to_string())
+            .set("y2", y2.to_string())
+            .set("stroke", "#000")
+            .set("stroke-width", line_weight.to_string());
+
+        return line;
+    }
+
 }

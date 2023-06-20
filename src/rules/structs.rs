@@ -22,7 +22,9 @@ pub struct Class {
     attributes: Vec<Component>,
     methods: Vec<Component>,
     x: usize,
-    y: usize
+    y: usize,
+    height: usize,
+    width: usize
 }
 
 fn add_text(text : svg::node::Text, i: usize, x: usize, y: usize) -> svg::node::element::Text {
@@ -71,6 +73,8 @@ impl Class {
             methods,
             x: 0,
             y: 0,
+            height: 0,
+            width: 0
         }
     }
 
@@ -80,6 +84,8 @@ impl Class {
     pub fn get_methods(&self) -> &Vec<Component> {&self.methods}
     pub fn get_x(&self) -> &usize {&self.x}
     pub fn get_y(&self) -> &usize {&self.y}
+    pub fn get_height(&self) -> &usize {&self.height}
+    pub fn get_width(&self) -> &usize {&self.width}
 
     pub fn print(&self) {
         println!("{} {}\n\
@@ -146,11 +152,12 @@ impl Class {
             i += 1;
         }
 
+        let height = (i+1)*50+additional;
         let rect = svg::node::element::Rectangle::new()
             .set("x", x)
             .set("y", y)
             .set("width", width)
-            .set("height", (i+1)*50+additional)
+            .set("height", height)
             .set("fill", "white")
             .set("stroke", "black")
             .set("stroke-width", 10);
@@ -203,7 +210,8 @@ impl Class {
 
         self.x = x;
         self.y = y;
-
+        self.height = height;
+        self.width = width;
     }
 }
 
