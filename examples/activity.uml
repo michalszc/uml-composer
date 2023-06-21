@@ -1,0 +1,14 @@
+@startuml activity
+
+(*) --> step1
+--> step2 : tak
+--> stepnew : opis
+if condition1 {
+    --> alt1 : tekst
+    --> alt11
+} else {
+    -->another1
+}
+--> step3:caption -->(^)
+
+@enduml

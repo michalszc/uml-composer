@@ -1,0 +1,23 @@
+@startuml usecase
+
+actor Driver as u1
+
+context Driving {
+    usecase "Drive the vehicle" as uc1
+    usecase "Park"
+    usecase "Start the vehicle" as uc2
+    usecase "Accelerate" as uc3
+    usecase "Steer" as uc4
+    usecase "Brake" as uc5
+}
+
+u1 -- uc1
+uc1 --> uc3 : "Include"
+uc1 --> uc4 : "Include"
+uc1 --> uc5 : "Include"
+uc1 -- uc2 : "Extends"
+u1 -- Park
+Park --> uc5 : "Include"
+
+
+@enduml

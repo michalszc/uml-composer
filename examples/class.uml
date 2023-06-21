@@ -1,0 +1,77 @@
+@startuml class
+
+class Employee {
+    attributes {
+        - id: int
+        - name: String
+    }
+
+    methods {
+        + getFullName: String
+    }
+}
+
+class Department {
+        attributes {
+            - id: int
+            - name: String
+        }
+
+        methods {
+        + getEmployees: ListOfEmployees
+        }
+}
+
+class Project {
+        attributes {
+            - id: int
+            - name: String
+        }
+
+        methods {
+            + getAssignedEmployees: ListOfEmployees
+        }
+}
+
+class Manager {
+    attributes {
+        - id: int
+        - name: String
+    }
+
+    methods {
+        + getManagedEmployees: ListOfEmployees
+    }
+}
+
+class Task {
+    attributes {
+        - id: int
+        - description: String
+    }
+
+    methods {
+        + assignToEmployee: void
+    }
+}
+
+class Report {
+    attributes {
+        - id: int
+        - content: String
+    }
+
+    methods {
+        + generateReport: void
+    }
+}
+
+Department --> Employee : "has" >
+Employee -- Project : "assigned to" >
+Employee -- Manager : "reports to" >
+Task -- Employee : "assigned task"
+Task -- Manager : "assigned by" >
+Report -- Employee : "created by" >
+Report -- Manager : "reviewed by" >
+
+@enduml
