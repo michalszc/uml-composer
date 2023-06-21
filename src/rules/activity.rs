@@ -1,7 +1,6 @@
 use pest::iterators::Pair;
 use crate::grammar_parser::Rule;
-use svg;
-use svg::node::element::SVG;
+use svg::node::element::{SVG, Rectangle};
 use crate::rules::path;
 use path::Path;
 
@@ -29,7 +28,7 @@ impl Activity {
     pub fn draw(&self, svg: &mut SVG) {
         let left = self.path.max_left()*250;
 
-        let rect = svg::node::element::Rectangle::new()
+        let rect = Rectangle::new()
             .set("width", "100%")
             .set("height", "100%")
             .set("fill", "white");

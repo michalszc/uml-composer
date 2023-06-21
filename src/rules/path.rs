@@ -131,7 +131,7 @@ impl Path {
 
                     alternatives.push(Condition::new(if_body, else_body));
                 }
-                _ => {}
+                _ => unreachable!()
             }
         }
 

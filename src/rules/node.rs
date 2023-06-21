@@ -4,7 +4,7 @@ use crate::rules::activity_utils;
 use pest::iterators::Pair;
 use svg::node::{
     element::{
-        SVG
+        SVG, Rectangle, Text as TextElement, Circle
     },
     Text
 };
@@ -75,7 +75,7 @@ impl Node {
             Type::IF => {
                 let name = Text::new(self.name.as_str());
 
-                let step = svg::node::element::Rectangle::new()
+                let step = Rectangle::new()
                     .set("x", x-25)
                     .set("y", y-25)
                     .set("width", (50.0*std::f64::consts::FRAC_1_SQRT_2) as usize)
@@ -86,7 +86,7 @@ impl Node {
                     .set("transform", format!("rotate({} {} {})", 45, x, y));
                 *svg = svg.clone().add(step);
 
-                let caption = svg::node::element::Text::new()
+                let caption = TextElement::new()
                     .set("x", x)
                     .set("y", y+39)
                     .set("text-anchor", "middle")
@@ -99,7 +99,7 @@ impl Node {
             Type::STEP => {
                 let name = Text::new(self.name.as_str());
 
-                let step = svg::node::element::Rectangle::new()
+                let step = Rectangle::new()
                     .set("x", x-width/2)
                     .set("y", y-32)
                     .set("width", width)
@@ -110,7 +110,7 @@ impl Node {
                     .set("rx", 15);
                 *svg = svg.clone().add(step);
 
-                let caption = svg::node::element::Text::new()
+                let caption = TextElement::new()
                     .set("x", x)
                     .set("y", y)
                     .set("text-anchor", "middle")
@@ -121,7 +121,7 @@ impl Node {
                 *svg = svg.clone().add(caption);
             }
             Type::END => {
-                let end = svg::node::element::Circle::new()
+                let end = Circle::new()
                     .set("cx", x)
                     .set("cy", y)
                     .set("r", 25)
@@ -130,14 +130,14 @@ impl Node {
                     .set("fill", "none");
                 *svg = svg.clone().add(end);
 
-                let center = svg::node::element::Circle::new()
+                let center = Circle::new()
                     .set("cx", x)
                     .set("cy", y)
                     .set("r", 20);
                 *svg = svg.clone().add(center);
             }
             Type::START => {
-                let start = svg::node::element::Circle::new()
+                let start = Circle::new()
                     .set("cx", x)
                     .set("cy", y)
                     .set("r", 25);
