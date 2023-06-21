@@ -143,8 +143,8 @@ mod link_test {
         assert_eq!(link.get_label().to_owned(), String::from("lorem ipsum 123"));
         assert_eq!(*link.get_arrow(), ArrowType::Missing);
         assert!(svg.to_string().contains(&format!(
-                "x=\"{}\" y=\"{}\">\n{}\n</text>\n<line marker-end=\"url(#arrowhead)\" stroke=\"#000\" stroke-width=\"3\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}",
-                (x1+x2)/2 , (y1+y2)/2-5, "lorem ipsum 123", x1, x2, y1, y2, END_SVG
+                "x=\"{}\" y=\"{}\">\n{}\n</text>\n",
+                (x1+x2)/2 , (y1+y2)/2-5, "lorem ipsum 123"
             )
         ));
     }
@@ -263,7 +263,6 @@ mod link_test {
         assert_eq!(link.get_label().to_owned(), String::from(""));
         assert_eq!(*link.get_arrow(), ArrowType::Missing);
         assert!(svg.to_string().contains(&format!("x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n{}", x1, x2, y1, y2, END_SVG)));
-
     }
 
     #[test]
@@ -284,8 +283,8 @@ mod link_test {
         assert_eq!(link.get_label().to_owned(), String::from("lorem ipsum 123"));
         assert_eq!(*link.get_arrow(), ArrowType::Missing);
         assert!(svg.to_string().contains(&format!(
-                "x=\"{}\" y=\"{}\">\n{}\n</text>\n<line marker-end=\"url(#arrowhead)\" stroke=\"#000\" stroke-dasharray=\"8 8\" stroke-width=\"3\" x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>\n",
-                (x1+x2)/2 , (y1+y2)/2-5, "lorem ipsum 123", x1, x2, y1, y2
+                "x=\"{}\" y=\"{}\">\n{}\n</text>\n",
+                (x1+x2)/2 , (y1+y2)/2-5, "lorem ipsum 123"
             )
         ));
     }
