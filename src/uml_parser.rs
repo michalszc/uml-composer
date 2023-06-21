@@ -34,7 +34,7 @@ impl UmlParser {
             panic!("Alias not found: {}", alias);
         }
     }
-    pub fn parse(value: &str) {
+    pub fn parse(value: &str) -> String {
         let initial_height:usize = 500;
         let initial_width:usize = 500;
         let mut width = initial_width as usize;
@@ -384,5 +384,7 @@ impl UmlParser {
             tracing::error!("Command failed with error code: {}", output.status);
             tracing::error!("Error message: {}", error_message);
         }
+        
+        svg.to_string()
     }
 }

@@ -102,13 +102,13 @@ impl DynamicTabsData {
         );
     }
 
-    pub fn add_svg_preview(&mut self, name: String, error: String) {
+    pub fn add_svg_preview(&mut self, name: String, content: String, error: String) {
         self.last_tab += 1;
         let svg_name = String::from(format!("SVG {}", name.replace(".uml", "")));
         let dynamic_tab_data = DynamicTabData {
             is_svg: true,
             name: svg_name.clone(),
-            content: String::from(""),
+            content,
             file_path: String::from(""),
             error
         };
@@ -236,23 +236,24 @@ impl Controller<DynamicTabsData, Tabs<DynamicTabs>> for TabsControler {
                 let index = data.current_tab;
                 let tab_data = data.tabs.get(index).unwrap();
                 let result = panic::catch_unwind(|| {
-                    UmlParser::parse(tab_data.content.clone().as_str());
+                    UmlParser::parse(tab_data.content.clone().as_str())
                 });
                 if result.is_ok() {
                     println!("asd");
-                    data.add_svg_preview(tab_data.name.clone(), String::from(""));
+                    let content = result.ok().unwrap();
+                    data.add_svg_preview(tab_data.name.clone(), content, String::from(""));
                 } else {
                     tracing::error!("Creating preview failed...");
                     let error = result.err().unwrap();
                     if let Some(err) = error.downcast_ref::<&str>() {
                         // The panic value is a string
-                        data.add_svg_preview(tab_data.name.clone(), err.to_string());
+                        data.add_svg_preview(tab_data.name.clone(), String::from(""), err.to_string());
                     } else if let Some(err) = error.downcast_ref::<String>() {
                         // The panic value is a String
-                        data.add_svg_preview(tab_data.name.clone(), err.to_string());
+                        data.add_svg_preview(tab_data.name.clone(), String::from(""), err.to_string());
                     } else {
                         // Unknown panic value type
-                        data.add_svg_preview(tab_data.name.clone(), String::from("Unknown error occurred"));
+                        data.add_svg_preview(tab_data.name.clone(), String::from(""), String::from("Unknown error occurred"));
                     }
                 }
                 child.set_tab_index(data.current_tab);
