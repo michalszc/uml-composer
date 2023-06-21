@@ -4,28 +4,28 @@
 Driving
 </text>
 <rect fill="transparent" fill-opacity="0.3" height="350" rx="10" ry="10" stroke="gray" stroke-width="2" width="700" x="150" y="100"/>
-<ellipse cx="325" cy="150" fill="blue" fill-opacity="0.2" rx="112" ry="23" stroke="black" stroke-width="2"/>
-<text dominant-baseline="central" fill="black" font-family="Arial" font-size="20" text-anchor="middle" x="325" y="156">
+<ellipse cx="325" cy="200" fill="blue" fill-opacity="0.2" rx="112" ry="23" stroke="black" stroke-width="2"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="20" text-anchor="middle" x="325" y="206">
 Drive the vehicle
 </text>
-<ellipse cx="325" cy="200" fill="blue" fill-opacity="0.2" rx="50" ry="23" stroke="black" stroke-width="2"/>
-<text dominant-baseline="central" fill="black" font-family="Arial" font-size="20" text-anchor="middle" x="325" y="206">
+<ellipse cx="325" cy="300" fill="blue" fill-opacity="0.2" rx="50" ry="23" stroke="black" stroke-width="2"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="20" text-anchor="middle" x="325" y="306">
 Park
 </text>
-<ellipse cx="675" cy="150" fill="blue" fill-opacity="0.2" rx="112" ry="23" stroke="black" stroke-width="2"/>
-<text dominant-baseline="central" fill="black" font-family="Arial" font-size="20" text-anchor="middle" x="675" y="156">
+<ellipse cx="675" cy="170" fill="blue" fill-opacity="0.2" rx="112" ry="23" stroke="black" stroke-width="2"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="20" text-anchor="middle" x="675" y="176">
 Start the vehicle
 </text>
-<ellipse cx="675" cy="200" fill="blue" fill-opacity="0.2" rx="70" ry="23" stroke="black" stroke-width="2"/>
-<text dominant-baseline="central" fill="black" font-family="Arial" font-size="20" text-anchor="middle" x="675" y="206">
+<ellipse cx="675" cy="240" fill="blue" fill-opacity="0.2" rx="70" ry="23" stroke="black" stroke-width="2"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="20" text-anchor="middle" x="675" y="246">
 Accelerate
 </text>
-<ellipse cx="675" cy="250" fill="blue" fill-opacity="0.2" rx="50" ry="23" stroke="black" stroke-width="2"/>
-<text dominant-baseline="central" fill="black" font-family="Arial" font-size="20" text-anchor="middle" x="675" y="256">
+<ellipse cx="675" cy="310" fill="blue" fill-opacity="0.2" rx="50" ry="23" stroke="black" stroke-width="2"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="20" text-anchor="middle" x="675" y="316">
 Steer
 </text>
-<ellipse cx="675" cy="300" fill="blue" fill-opacity="0.2" rx="50" ry="23" stroke="black" stroke-width="2"/>
-<text dominant-baseline="central" fill="black" font-family="Arial" font-size="20" text-anchor="middle" x="675" y="306">
+<ellipse cx="675" cy="380" fill="blue" fill-opacity="0.2" rx="50" ry="23" stroke="black" stroke-width="2"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="20" text-anchor="middle" x="675" y="386">
 Brake
 </text>
 <text dominant-baseline="central" fill="black" font-family="Arial" font-size="30" text-anchor="middle" x="75" y="320">
@@ -37,46 +37,38 @@ Driver
 <line stroke="#000" stroke-width="3" x1="105" x2="75" y1="210" y2="230"/>
 <line stroke="#000" stroke-width="3" x1="45" x2="75" y1="290" y2="250"/>
 <line stroke="#000" stroke-width="3" x1="105" x2="75" y1="290" y2="250"/>
-<line stroke="#000" stroke-width="3" x1="95" x2="213" y1="230" y2="150"/>
-<defs>
-<marker id="arrowhead" markerHeight="3.5" markerWidth="5" orient="auto" refX="0" refY="1.75">
-<polygon points="-5 0, 0 1.75, -5 3.5"/>
-</marker>
-</defs>
-<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(16.574007 521 175)" x="521" y="170">
+<line stroke="#000" stroke-width="3" x1="95" x2="213" y1="230" y2="200"/>
+<line stroke="#000" stroke-width="3" x1="605" x2="577" y1="240" y2="230"/>
+<line stroke="#000" stroke-width="3" x1="605" x2="576" y1="240" y2="237"/>
+<line stroke="#000" stroke-width="3" x1="577" x2="576" y1="230" y2="237"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(13.392498 521 220)" x="521" y="215">
 Include
 </text>
-<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="3" x1="437" x2="605" y1="150" y2="200"/>
-<defs>
-<marker id="arrowhead" markerHeight="3.5" markerWidth="5" orient="auto" refX="0" refY="1.75">
-<polygon points="-5 0, 0 1.75, -5 3.5"/>
-</marker>
-</defs>
-<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(28.009176 531 200)" x="531" y="195">
+<line stroke="#000" stroke-width="3" x1="437" x2="605" y1="200" y2="240"/>
+<line stroke="#000" stroke-width="3" x1="625" x2="602" y1="310" y2="292"/>
+<line stroke="#000" stroke-width="3" x1="625" x2="598" y1="310" y2="299"/>
+<line stroke="#000" stroke-width="3" x1="602" x2="598" y1="292" y2="299"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(30.332174 531 255)" x="531" y="250">
 Include
 </text>
-<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="3" x1="437" x2="625" y1="150" y2="250"/>
-<defs>
-<marker id="arrowhead" markerHeight="3.5" markerWidth="5" orient="auto" refX="0" refY="1.75">
-<polygon points="-5 0, 0 1.75, -5 3.5"/>
-</marker>
-</defs>
-<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(38.5854 531 225)" x="531" y="220">
+<line stroke="#000" stroke-width="3" x1="437" x2="625" y1="200" y2="310"/>
+<line stroke="#000" stroke-width="3" x1="625" x2="607" y1="380" y2="357"/>
+<line stroke="#000" stroke-width="3" x1="625" x2="601" y1="380" y2="363"/>
+<line stroke="#000" stroke-width="3" x1="607" x2="601" y1="357" y2="363"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(43.754635 531 290)" x="531" y="285">
 Include
 </text>
-<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="3" x1="437" x2="625" y1="150" y2="300"/>
-<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(0 500 150)" x="500" y="145">
+<line stroke="#000" stroke-width="3" x1="437" x2="625" y1="200" y2="380"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(-13.392498 500 185)" x="500" y="180">
 Extends
 </text>
-<line stroke="#000" stroke-width="3" x1="437" x2="563" y1="150" y2="150"/>
-<line stroke="#000" stroke-width="3" x1="95" x2="275" y1="230" y2="200"/>
-<defs>
-<marker id="arrowhead" markerHeight="3.5" markerWidth="5" orient="auto" refX="0" refY="1.75">
-<polygon points="-5 0, 0 1.75, -5 3.5"/>
-</marker>
-</defs>
-<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(21.80141 500 250)" x="500" y="245">
+<line stroke="#000" stroke-width="3" x1="437" x2="563" y1="200" y2="170"/>
+<line stroke="#000" stroke-width="3" x1="95" x2="275" y1="230" y2="300"/>
+<line stroke="#000" stroke-width="3" x1="625" x2="598" y1="380" y2="368"/>
+<line stroke="#000" stroke-width="3" x1="625" x2="596" y1="380" y2="375"/>
+<line stroke="#000" stroke-width="3" x1="598" x2="596" y1="368" y2="375"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(17.74467 500 340)" x="500" y="335">
 Include
 </text>
-<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="3" x1="375" x2="625" y1="200" y2="300"/>
+<line stroke="#000" stroke-width="3" x1="375" x2="625" y1="300" y2="380"/>
 </svg>
