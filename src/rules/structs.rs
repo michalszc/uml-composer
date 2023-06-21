@@ -88,16 +88,16 @@ impl Class {
     pub fn get_width(&self) -> &usize {&self.width}
 
     pub fn print(&self) {
-        println!("{} {}\n\
+        tracing::info!("{} {}\n\
         attributes:", self.keyword, self.name);
         for attribute in &self.attributes {
             attribute.print();
         }
-        println!("methods:");
+        tracing::info!("methods:");
         for method in &self.methods {
             method.print();
         }
-        println!();
+        tracing::info!("");
     }
 
     pub fn draw(&mut self, svg: &mut svg::node::element::SVG, x: usize, y: usize) {
@@ -249,6 +249,6 @@ impl Component {
             PROTECTED => "protected"
         };
 
-        println!("\t{} {} {}", v, self.kind, self.name);
+        tracing::info!("\t{} {} {}", v, self.kind, self.name);
     }
 }

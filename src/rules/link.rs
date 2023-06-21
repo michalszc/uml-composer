@@ -100,7 +100,7 @@ impl Link {
     pub fn set_link_type(&mut self, link_type: LinkType) { self.link_type = link_type; }
 
     pub fn print(&self) {
-        println!("Left: {:?} Link: {:?} Right: {:?} Label: {:?} Arrow: {:?}",
+        tracing::info!("Left: {:?} Link: {:?} Right: {:?} Label: {:?} Arrow: {:?}",
             self.left_id, self.link_type, self.right_id, self.label, self.arrow);
     }
 

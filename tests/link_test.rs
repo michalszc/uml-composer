@@ -319,8 +319,6 @@ mod link_test {
         assert!(svg.to_string().contains(&format!(
             "x1=\"{}\" x2=\"{}\" y1=\"{}\" y2=\"{}\"/>", xs, x2, y2, y2)));
 
-        // println!("{}", svg.to_string());
-
     }
 
 }

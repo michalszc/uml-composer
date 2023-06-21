@@ -24,12 +24,12 @@ impl Condition {
     }
 
     pub fn print(&self) {
-        println!("If {{");
+        tracing::info!("If {{");
         self.main_path.print();
-        println!("}}");
-        println!("else {{");
+        tracing::info!("}}");
+        tracing::info!("else {{");
         self.alternative_path.print();
-        println!("}}");
+        tracing::info!("}}");
     }
 
     pub fn draw(&self, x: usize, y: usize, svg: &mut SVG, label: String) {
@@ -150,10 +150,10 @@ impl Path {
                     i += 1;
                 }
                 Type::START => {
-                    println!("Start")
+                    tracing::info!("Start")
                 }
                 Type::END => {
-                    println!("Stop")
+                    tracing::info!("Stop")
                 }
                 Type::STEP => {
                     node.print()

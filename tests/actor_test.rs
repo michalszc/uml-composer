@@ -18,7 +18,6 @@ mod actor_test {
         let y = 100;
         let r = 20;
         actor.draw(&mut svg, x, y, r);
-        // println!("{}", svg.to_string());
         assert!(svg.to_string().contains(&format!("<circle cx=\"{}\" cy=\"{}\" fill=\"none\" r=\"{}\"", x, y, r)));
     }
 

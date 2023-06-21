@@ -80,7 +80,7 @@ impl UseCase {
     }
 
     pub fn print(&self) {
-        println!("Use Case label: {:?} Use Case alias: {:?} x: {} y: {} width_number: {}",
+        tracing::info!("Use Case label: {:?} Use Case alias: {:?} x: {} y: {} width_number: {}",
                  self.label, self.alias, self.x, self.y, self.width_number);
     }
 

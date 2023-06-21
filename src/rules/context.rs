@@ -47,7 +47,7 @@ impl Context {
     }
 
     pub fn print(&self) {
-        println!("Context name {}. Width: {}. Use cases: ", self.label, self.width_number);
+        tracing::info!("Context name {}. Width: {}. Use cases: ", self.label, self.width_number);
         for use_case in &self.use_cases {
             use_case.print();
         }
