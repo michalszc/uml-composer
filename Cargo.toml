@@ -1,9 +1,12 @@
 [package]
 name = "uml-composer"
-version = "0.2.0"
+version = "1.0.0"
 edition = "2021"
 
 [dependencies]
 pest = "2.5.7"
 pest_derive = "2.5.7"
 svg = "0.13.1"
+druid = { version = "0.8.3", features = ["im", "svg", "image", "png"] }
+instant = "0.1.12"
+tracing = "0.1.37"
