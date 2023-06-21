@@ -1,0 +1,128 @@
+<svg viewBox="0 0 850 1090" xmlns="http://www.w3.org/2000/svg">
+<rect fill="white" height="100%" width="100%"/>
+<circle cx="350" cy="25" r="25"/>
+<defs>
+<marker id="arrowhead" markerHeight="5" markerWidth="5" orient="auto" refX="0" refY="3.5">
+<polygon points="-5 1.5, 0 3.5, -5 5.5"/>
+</marker>
+</defs>
+<text dominant-baseline="central" fill="black" font-size="25" text-anchor="middle" transform="rotate(90 350 90)" x="330" y="70">
+
+</text>
+<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="8" x1="350" x2="350" y1="45" y2="135"/>
+<rect fill="white" height="50" rx="15" stroke="black" stroke-width="3" width="80" x="310" y="123"/>
+<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="350" y="155">
+step1
+</text>
+<defs>
+<marker id="arrowhead" markerHeight="5" markerWidth="5" orient="auto" refX="0" refY="3.5">
+<polygon points="-5 1.5, 0 3.5, -5 5.5"/>
+</marker>
+</defs>
+<text dominant-baseline="central" fill="black" font-size="25" text-anchor="middle" transform="rotate(90 350 220)" x="330" y="200">
+tak
+</text>
+<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="8" x1="350" x2="350" y1="175" y2="265"/>
+<rect fill="white" height="50" rx="15" stroke="black" stroke-width="3" width="80" x="310" y="253"/>
+<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="350" y="285">
+step2
+</text>
+<defs>
+<marker id="arrowhead" markerHeight="5" markerWidth="5" orient="auto" refX="0" refY="3.5">
+<polygon points="-5 1.5, 0 3.5, -5 5.5"/>
+</marker>
+</defs>
+<text dominant-baseline="central" fill="black" font-size="25" text-anchor="middle" transform="rotate(90 350 350)" x="330" y="330">
+opis
+</text>
+<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="8" x1="350" x2="350" y1="305" y2="395"/>
+<rect fill="white" height="50" rx="15" stroke="black" stroke-width="3" width="112" x="294" y="383"/>
+<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="350" y="415">
+stepnew
+</text>
+<defs>
+<marker id="arrowhead" markerHeight="5" markerWidth="5" orient="auto" refX="0" refY="3.5">
+<polygon points="-5 1.5, 0 3.5, -5 5.5"/>
+</marker>
+</defs>
+<text dominant-baseline="central" fill="black" font-size="25" text-anchor="middle" transform="rotate(90 350 480)" x="330" y="460">
+
+</text>
+<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="8" x1="350" x2="350" y1="435" y2="525"/>
+<rect fill="white" height="35" stroke="black" stroke-width="3" transform="rotate(45 350 545)" width="35" x="325" y="520"/>
+<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="350" y="584">
+condition1
+</text>
+<rect fill="white" height="50" rx="15" stroke="black" stroke-width="3" width="64" x="568" y="513"/>
+<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="600" y="545">
+alt1
+</text>
+<defs>
+<marker id="arrowhead" markerHeight="5" markerWidth="5" orient="auto" refX="0" refY="3.5">
+<polygon points="-5 1.5, 0 3.5, -5 5.5"/>
+</marker>
+</defs>
+<text dominant-baseline="central" fill="black" font-size="25" text-anchor="middle" transform="rotate(90 600 610)" x="580" y="590">
+
+</text>
+<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="8" x1="600" x2="600" y1="565" y2="655"/>
+<rect fill="white" height="50" rx="15" stroke="black" stroke-width="3" width="80" x="560" y="643"/>
+<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="600" y="675">
+alt11
+</text>
+<defs>
+<marker id="arrowhead" markerHeight="5" markerWidth="5" orient="auto" refX="0" refY="3.5">
+<polygon points="-5 1.5, 0 3.5, -5 5.5"/>
+</marker>
+</defs>
+<text dominant-baseline="central" fill="black" font-size="25" text-anchor="middle" transform="rotate(0 469 533)" x="449" y="513">
+tekst
+</text>
+<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="8" x1="370" x2="568" y1="533" y2="533"/>
+<rect fill="white" height="50" rx="15" stroke="black" stroke-width="3" width="128" x="36" y="513"/>
+<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="100" y="545">
+another1
+</text>
+<defs>
+<marker id="arrowhead" markerHeight="5" markerWidth="5" orient="auto" refX="0" refY="3.5">
+<polygon points="-5 1.5, 0 3.5, -5 5.5"/>
+</marker>
+</defs>
+<text dominant-baseline="central" fill="black" font-size="25" text-anchor="middle" transform="rotate(-0 247 533)" x="227" y="513">
+
+</text>
+<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="8" x1="330" x2="164" y1="533" y2="533"/>
+<defs>
+<marker id="arrowhead" markerHeight="5" markerWidth="5" orient="auto" refX="0" refY="3.5">
+<polygon points="-5 1.5, 0 3.5, -5 5.5"/>
+</marker>
+</defs>
+<text dominant-baseline="central" fill="black" font-size="25" text-anchor="middle" transform="rotate(-18.778034 475 737)" x="455" y="717">
+caption
+</text>
+<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="8" x1="600" x2="350" y1="695" y2="780"/>
+<defs>
+<marker id="arrowhead" markerHeight="5" markerWidth="5" orient="auto" refX="0" refY="3.5">
+<polygon points="-5 1.5, 0 3.5, -5 5.5"/>
+</marker>
+</defs>
+<text dominant-baseline="central" fill="black" font-size="25" text-anchor="middle" transform="rotate(40.69553 225 672)" x="205" y="652">
+caption
+</text>
+<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="8" x1="100" x2="350" y1="565" y2="780"/>
+<rect fill="white" height="50" rx="15" stroke="black" stroke-width="3" width="80" x="310" y="773"/>
+<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="350" y="805">
+step3
+</text>
+<defs>
+<marker id="arrowhead" markerHeight="5" markerWidth="5" orient="auto" refX="0" refY="3.5">
+<polygon points="-5 1.5, 0 3.5, -5 5.5"/>
+</marker>
+</defs>
+<text dominant-baseline="central" fill="black" font-size="25" text-anchor="middle" transform="rotate(90 350 870)" x="330" y="850">
+
+</text>
+<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="8" x1="350" x2="350" y1="825" y2="915"/>
+<circle cx="350" cy="935" fill="none" r="25" stroke="black" stroke-width="2"/>
+<circle cx="350" cy="935" r="20"/>
+</svg>

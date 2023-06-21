@@ -20,6 +20,11 @@ Cargo.lock
 
 # SVG
 *.svg
+!/examples/*.svg
+
+# UML
+*.uml
+!/examples/*.uml
 
 # PNG 
 *.png

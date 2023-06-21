@@ -1,0 +1,112 @@
+<svg viewBox="0 0 3000 1200" xmlns="http://www.w3.org/2000/svg">
+<rect fill="white" height="100%" width="100%"/>
+<rect fill="white" height="350" stroke="black" stroke-width="10" width="390" x="50" y="25"/>
+<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="250" y="62">
+klasa1
+</text>
+<line stroke="#000" stroke-width="5" x1="50" x2="440" y1="75" y2="75"/>
+<line stroke="#000" stroke-width="5" x1="50" x2="440" y1="225" y2="225"/>
+<text dominant-baseline="central" fill="black" font-size="28" x="65" y="112">
+- atrybut_prywatny : typ
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="65" y="162">
++ atrybut_publiczny : typ
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="65" y="212">
+# atrybut_chroniony : typ
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="65" y="262">
+- metoda_prywatna() : typ
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="65" y="312">
++ metoda_publiczna() : typ
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="65" y="362">
+# metoda_chroniona() : typ
+</text>
+<rect fill="white" height="350" stroke="black" stroke-width="10" width="390" x="1850" y="50"/>
+<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="2050" y="87">
+klasa2
+</text>
+<line stroke="#000" stroke-width="5" x1="1850" x2="2240" y1="100" y2="100"/>
+<line stroke="#000" stroke-width="5" x1="1850" x2="2240" y1="250" y2="250"/>
+<text dominant-baseline="central" fill="black" font-size="28" x="1865" y="137">
+- atrybut_prywatny : typ
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="1865" y="187">
++ atrybut_publiczny : typ
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="1865" y="237">
+# atrybut_chroniony : typ
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="1865" y="287">
+- metoda_prywatna() : typ
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="1865" y="337">
++ metoda_publiczna() : typ
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="1865" y="387">
+# metoda_chroniona() : typ
+</text>
+<rect fill="white" height="400" stroke="black" stroke-width="10" width="390" x="50" y="475"/>
+<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="250" y="512">
+(interface)
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="250" y="562">
+interfejs1
+</text>
+<line stroke="#000" stroke-width="5" x1="50" x2="440" y1="575" y2="575"/>
+<line stroke="#000" stroke-width="5" x1="50" x2="440" y1="725" y2="725"/>
+<text dominant-baseline="central" fill="black" font-size="28" x="65" y="612">
+- atrybut_prywatny : typ
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="65" y="662">
++ atrybut_publiczny : typ
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="65" y="712">
+# atrybut_chroniony : typ
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="65" y="762">
+- metoda_prywatna() : typ
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="65" y="812">
++ metoda_publiczna() : typ
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="65" y="862">
+# metoda_chroniona() : typ
+</text>
+<line stroke="#000" stroke-width="3" x1="900" x2="900" y1="81" y2="106"/>
+<line stroke="#000" stroke-width="3" x1="440" x2="900" y1="81" y2="81"/>
+<line stroke="#000" stroke-width="3" x1="900" x2="1850" y1="106" y2="106"/>
+<line stroke="#000" stroke-width="3" x1="1000" x2="1000" y1="138" y2="163"/>
+<defs>
+<marker id="arrowhead" markerHeight="7" markerWidth="10" orient="auto" refX="0" refY="1.75">
+<polygon points="-10 -5.25, 0 1.75, -10 8.75"/>
+</marker>
+</defs>
+<line stroke="#000" stroke-width="3" x1="440" x2="1000" y1="138" y2="138"/>
+<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="3" x1="1000" x2="1850" y1="163" y2="163"/>
+<line stroke="#000" stroke-dasharray="8 8" stroke-width="3" x1="1100" x2="1100" y1="195" y2="220"/>
+<line stroke="#000" stroke-dasharray="8 8" stroke-width="3" x1="440" x2="1100" y1="195" y2="195"/>
+<line stroke="#000" stroke-dasharray="8 8" stroke-width="3" x1="1100" x2="1850" y1="220" y2="220"/>
+<line stroke="#000" stroke-dasharray="8 8" stroke-width="3" x1="1200" x2="1200" y1="251" y2="276"/>
+<defs>
+<marker id="arrowhead" markerHeight="7" markerWidth="10" orient="auto" refX="0" refY="1.75">
+<polygon points="-10 -5.25, 0 1.75, -10 8.75"/>
+</marker>
+</defs>
+<line stroke="#000" stroke-dasharray="8 8" stroke-width="3" x1="440" x2="1200" y1="251" y2="251"/>
+<line marker-end="url(#arrowhead)" stroke="#000" stroke-dasharray="8 8" stroke-width="3" x1="1200" x2="1850" y1="276" y2="276"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(90 1300 320)" x="1300" y="315">
+lorem ipsum 123
+</text>
+<line stroke="#000" stroke-width="3" x1="1300" x2="1300" y1="308" y2="333"/>
+<line stroke="#000" stroke-width="3" x1="440" x2="1300" y1="308" y2="308"/>
+<line stroke="#000" stroke-width="3" x1="1300" x2="1850" y1="333" y2="333"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(90 1400 377)" x="1400" y="372">
+lorem ipsum 124▶
+</text>
+<line stroke="#000" stroke-width="3" x1="1400" x2="1400" y1="365" y2="390"/>
+<line stroke="#000" stroke-width="3" x1="440" x2="1400" y1="365" y2="365"/>
+<line stroke="#000" stroke-width="3" x1="1400" x2="1850" y1="390" y2="390"/>
+</svg>
