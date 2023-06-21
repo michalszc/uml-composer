@@ -64,7 +64,7 @@ impl Actor {
 
 
     pub fn print(&self) {
-        println!("Actor name: {:?} Actor alias: {:?}",
+        tracing::info!("Actor name: {:?} Actor alias: {:?}",
                  self.label, self.alias);
     }
 

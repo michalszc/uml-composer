@@ -100,24 +100,13 @@ impl Link {
     pub fn set_link_type(&mut self, link_type: LinkType) { self.link_type = link_type; }
 
     pub fn print(&self) {
-        println!("Left: {:?} Link: {:?} Right: {:?} Label: {:?} Arrow: {:?}",
+        tracing::info!("Left: {:?} Link: {:?} Right: {:?} Label: {:?} Arrow: {:?}",
             self.left_id, self.link_type, self.right_id, self.label, self.arrow);
     }
 
     pub fn draw(&self, svg: &mut SVG, x1: i32, y1: i32, x2: i32, y2: i32) {
         let line_weight = 3;
         let text_size = line_weight * 6;
-        let arrowhead = Marker::new()
-            .set("id", "arrowhead")
-            .set("markerWidth", "5")   // Adjust the width to make it smaller
-            .set("markerHeight", "3.5")  // Adjust the height to make it smaller
-            .set("refX", "0")
-            .set("refY", "1.75")  // Adjust the reference point to center the arrowhead
-            .set("orient", "auto")
-            .add(
-                Polygon::new()
-                    .set("points", "-5 0, 0 1.75, -5 3.5")  // Adjust the points to fit the new dimensions
-            );
 
         let mut line = self.draw_line(x1, y1, x2, y2, line_weight);
         
@@ -125,16 +114,37 @@ impl Link {
             line = line.set("stroke-dasharray", "8 8");
         }
 
+        // Calculate the angle of the line
+        let angle = ((y2 - y1) as f32 / (x2 - x1) as f32).atan();
+
         if self.link_type == LinkType::SolidArrow || self.link_type == LinkType::DashedArrow{
-            line = line.set("marker-end", "url(#arrowhead)");
-            let defs = Definitions::new().add(arrowhead);
-            *svg = svg.clone().add(defs);
+            let line_length = 30.0;
+            let angle_offset:f32 = 7.0;
+
+            let angle_left = angle + angle_offset.to_radians();
+            let angle_right = angle - angle_offset.to_radians();
+
+            let left_x1 = x2;
+            let left_y1 = y2;
+            let left_x2 = x2 - (line_length * angle_left.cos()) as i32;
+            let left_y2 = y2 - (line_length * angle_left.sin()) as i32;
+
+            let right_x1 = x2;
+            let right_y1 = y2;
+            let right_x2 = x2 - (line_length * angle_right.cos()) as i32;
+            let right_y2 = y2 - (line_length * angle_right.sin()) as i32;
+
+            let line_left = self.draw_line(left_x1, left_y1, left_x2, left_y2, line_weight);
+            let line_right = self.draw_line(right_x1, right_y1, right_x2, right_y2, line_weight);
+            let line_base = self.draw_line(left_x2, left_y2, right_x2, right_y2, line_weight);
+
+            *svg = svg.clone().add(line_left);
+            *svg = svg.clone().add(line_right);
+            *svg = svg.clone().add(line_base);
         }
 
-        if !self.label.is_empty() {
-            // Calculate the angle of the line
-            let angle = ((y2 - y1) as f32 / (x2 - x1) as f32).atan();
 
+        if !self.label.is_empty() {
             // Calculate the center point of the line
             let center_x = (x1 + x2) / 2;
             let center_y = (y1 + y2) / 2;

@@ -66,7 +66,7 @@ impl Node {
     }
 
     pub fn print(&self) {
-        println!("Activity")
+        tracing::info!("Activity")
     }
 
     pub fn draw(&self, x: usize, y: usize, svg: &mut SVG) {

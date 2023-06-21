@@ -1,112 +1,140 @@
-<svg viewBox="0 0 3000 1200" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 3000 1800" xmlns="http://www.w3.org/2000/svg">
 <rect fill="white" height="100%" width="100%"/>
-<rect fill="white" height="350" stroke="black" stroke-width="10" width="390" x="50" y="25"/>
+<rect fill="white" height="200" stroke="black" stroke-width="10" width="360" x="50" y="25"/>
 <text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="250" y="62">
-klasa1
+Employee
 </text>
-<line stroke="#000" stroke-width="5" x1="50" x2="440" y1="75" y2="75"/>
-<line stroke="#000" stroke-width="5" x1="50" x2="440" y1="225" y2="225"/>
+<line stroke="#000" stroke-width="5" x1="50" x2="410" y1="75" y2="75"/>
+<line stroke="#000" stroke-width="5" x1="50" x2="410" y1="125" y2="125"/>
 <text dominant-baseline="central" fill="black" font-size="28" x="65" y="112">
-- atrybut_prywatny : typ
+- id : int
 </text>
 <text dominant-baseline="central" fill="black" font-size="28" x="65" y="162">
-+ atrybut_publiczny : typ
+- name : String
 </text>
 <text dominant-baseline="central" fill="black" font-size="28" x="65" y="212">
-# atrybut_chroniony : typ
++ getFullName() : String
 </text>
-<text dominant-baseline="central" fill="black" font-size="28" x="65" y="262">
-- metoda_prywatna() : typ
-</text>
-<text dominant-baseline="central" fill="black" font-size="28" x="65" y="312">
-+ metoda_publiczna() : typ
-</text>
-<text dominant-baseline="central" fill="black" font-size="28" x="65" y="362">
-# metoda_chroniona() : typ
-</text>
-<rect fill="white" height="350" stroke="black" stroke-width="10" width="390" x="1850" y="50"/>
+<rect fill="white" height="200" stroke="black" stroke-width="10" width="510" x="1850" y="50"/>
 <text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="2050" y="87">
-klasa2
+Department
 </text>
-<line stroke="#000" stroke-width="5" x1="1850" x2="2240" y1="100" y2="100"/>
-<line stroke="#000" stroke-width="5" x1="1850" x2="2240" y1="250" y2="250"/>
+<line stroke="#000" stroke-width="5" x1="1850" x2="2360" y1="100" y2="100"/>
+<line stroke="#000" stroke-width="5" x1="1850" x2="2360" y1="150" y2="150"/>
 <text dominant-baseline="central" fill="black" font-size="28" x="1865" y="137">
-- atrybut_prywatny : typ
+- id : int
 </text>
 <text dominant-baseline="central" fill="black" font-size="28" x="1865" y="187">
-+ atrybut_publiczny : typ
+- name : String
 </text>
 <text dominant-baseline="central" fill="black" font-size="28" x="1865" y="237">
-# atrybut_chroniony : typ
++ getEmployees() : ListOfEmployees
 </text>
-<text dominant-baseline="central" fill="black" font-size="28" x="1865" y="287">
-- metoda_prywatna() : typ
+<rect fill="white" height="200" stroke="black" stroke-width="10" width="630" x="50" y="325"/>
+<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="250" y="362">
+Project
 </text>
-<text dominant-baseline="central" fill="black" font-size="28" x="1865" y="337">
-+ metoda_publiczna() : typ
+<line stroke="#000" stroke-width="5" x1="50" x2="680" y1="375" y2="375"/>
+<line stroke="#000" stroke-width="5" x1="50" x2="680" y1="425" y2="425"/>
+<text dominant-baseline="central" fill="black" font-size="28" x="65" y="412">
+- id : int
 </text>
-<text dominant-baseline="central" fill="black" font-size="28" x="1865" y="387">
-# metoda_chroniona() : typ
+<text dominant-baseline="central" fill="black" font-size="28" x="65" y="462">
+- name : String
 </text>
-<rect fill="white" height="400" stroke="black" stroke-width="10" width="390" x="50" y="475"/>
-<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="250" y="512">
-(interface)
+<text dominant-baseline="central" fill="black" font-size="28" x="65" y="512">
++ getAssignedEmployees() : ListOfEmployees
 </text>
-<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="250" y="562">
-interfejs1
+<rect fill="white" height="200" stroke="black" stroke-width="10" width="615" x="1850" y="350"/>
+<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="2050" y="387">
+Manager
 </text>
-<line stroke="#000" stroke-width="5" x1="50" x2="440" y1="575" y2="575"/>
-<line stroke="#000" stroke-width="5" x1="50" x2="440" y1="725" y2="725"/>
-<text dominant-baseline="central" fill="black" font-size="28" x="65" y="612">
-- atrybut_prywatny : typ
+<line stroke="#000" stroke-width="5" x1="1850" x2="2465" y1="400" y2="400"/>
+<line stroke="#000" stroke-width="5" x1="1850" x2="2465" y1="450" y2="450"/>
+<text dominant-baseline="central" fill="black" font-size="28" x="1865" y="437">
+- id : int
 </text>
-<text dominant-baseline="central" fill="black" font-size="28" x="65" y="662">
-+ atrybut_publiczny : typ
+<text dominant-baseline="central" fill="black" font-size="28" x="1865" y="487">
+- name : String
 </text>
+<text dominant-baseline="central" fill="black" font-size="28" x="1865" y="537">
++ getManagedEmployees() : ListOfEmployees
+</text>
+<rect fill="white" height="200" stroke="black" stroke-width="10" width="405" x="50" y="625"/>
+<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="250" y="662">
+Task
+</text>
+<line stroke="#000" stroke-width="5" x1="50" x2="455" y1="675" y2="675"/>
+<line stroke="#000" stroke-width="5" x1="50" x2="455" y1="725" y2="725"/>
 <text dominant-baseline="central" fill="black" font-size="28" x="65" y="712">
-# atrybut_chroniony : typ
+- id : int
 </text>
 <text dominant-baseline="central" fill="black" font-size="28" x="65" y="762">
-- metoda_prywatna() : typ
+- description : String
 </text>
 <text dominant-baseline="central" fill="black" font-size="28" x="65" y="812">
-+ metoda_publiczna() : typ
++ assignToEmployee() : void
 </text>
-<text dominant-baseline="central" fill="black" font-size="28" x="65" y="862">
-# metoda_chroniona() : typ
+<rect fill="white" height="200" stroke="black" stroke-width="10" width="375" x="1850" y="650"/>
+<text dominant-baseline="central" fill="black" font-size="28" text-anchor="middle" x="2050" y="687">
+Report
 </text>
-<line stroke="#000" stroke-width="3" x1="900" x2="900" y1="81" y2="106"/>
-<line stroke="#000" stroke-width="3" x1="440" x2="900" y1="81" y2="81"/>
-<line stroke="#000" stroke-width="3" x1="900" x2="1850" y1="106" y2="106"/>
-<line stroke="#000" stroke-width="3" x1="1000" x2="1000" y1="138" y2="163"/>
+<line stroke="#000" stroke-width="5" x1="1850" x2="2225" y1="700" y2="700"/>
+<line stroke="#000" stroke-width="5" x1="1850" x2="2225" y1="750" y2="750"/>
+<text dominant-baseline="central" fill="black" font-size="28" x="1865" y="737">
+- id : int
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="1865" y="787">
+- content : String
+</text>
+<text dominant-baseline="central" fill="black" font-size="28" x="1865" y="837">
++ generateReport() : void
+</text>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(-90 900 151)" x="900" y="146">
+has▶
+</text>
+<line stroke="#000" stroke-width="3" x1="900" x2="900" y1="240" y2="63"/>
 <defs>
 <marker id="arrowhead" markerHeight="7" markerWidth="10" orient="auto" refX="0" refY="1.75">
 <polygon points="-10 -5.25, 0 1.75, -10 8.75"/>
 </marker>
 </defs>
-<line stroke="#000" stroke-width="3" x1="440" x2="1000" y1="138" y2="138"/>
-<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="3" x1="1000" x2="1850" y1="163" y2="163"/>
-<line stroke="#000" stroke-dasharray="8 8" stroke-width="3" x1="1100" x2="1100" y1="195" y2="220"/>
-<line stroke="#000" stroke-dasharray="8 8" stroke-width="3" x1="440" x2="1100" y1="195" y2="195"/>
-<line stroke="#000" stroke-dasharray="8 8" stroke-width="3" x1="1100" x2="1850" y1="220" y2="220"/>
-<line stroke="#000" stroke-dasharray="8 8" stroke-width="3" x1="1200" x2="1200" y1="251" y2="276"/>
-<defs>
-<marker id="arrowhead" markerHeight="7" markerWidth="10" orient="auto" refX="0" refY="1.75">
-<polygon points="-10 -5.25, 0 1.75, -10 8.75"/>
-</marker>
-</defs>
-<line stroke="#000" stroke-dasharray="8 8" stroke-width="3" x1="440" x2="1200" y1="251" y2="251"/>
-<line marker-end="url(#arrowhead)" stroke="#000" stroke-dasharray="8 8" stroke-width="3" x1="1200" x2="1850" y1="276" y2="276"/>
-<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(90 1300 320)" x="1300" y="315">
-lorem ipsum 123
+<line stroke="#000" stroke-width="3" x1="1850" x2="900" y1="240" y2="240"/>
+<line marker-end="url(#arrowhead)" stroke="#000" stroke-width="3" x1="900" x2="410" y1="63" y2="63"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(90 985 308)" x="985" y="303">
+assigned to▶
 </text>
-<line stroke="#000" stroke-width="3" x1="1300" x2="1300" y1="308" y2="333"/>
-<line stroke="#000" stroke-width="3" x1="440" x2="1300" y1="308" y2="308"/>
-<line stroke="#000" stroke-width="3" x1="1300" x2="1850" y1="333" y2="333"/>
-<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(90 1400 377)" x="1400" y="372">
-lorem ipsum 124▶
+<line stroke="#000" stroke-width="3" x1="985" x2="985" y1="101" y2="515"/>
+<line stroke="#000" stroke-width="3" x1="410" x2="985" y1="101" y2="101"/>
+<line stroke="#000" stroke-width="3" x1="985" x2="680" y1="515" y2="515"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(90 1071 276)" x="1071" y="271">
+reports to▶
 </text>
-<line stroke="#000" stroke-width="3" x1="1400" x2="1400" y1="365" y2="390"/>
-<line stroke="#000" stroke-width="3" x1="440" x2="1400" y1="365" y2="365"/>
-<line stroke="#000" stroke-width="3" x1="1400" x2="1850" y1="390" y2="390"/>
+<line stroke="#000" stroke-width="3" x1="1071" x2="1071" y1="139" y2="413"/>
+<line stroke="#000" stroke-width="3" x1="410" x2="1071" y1="139" y2="139"/>
+<line stroke="#000" stroke-width="3" x1="1071" x2="1850" y1="413" y2="413"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(-90 1157 448)" x="1157" y="443">
+assigned task
+</text>
+<line stroke="#000" stroke-width="3" x1="1157" x2="1157" y1="720" y2="177"/>
+<line stroke="#000" stroke-width="3" x1="455" x2="1157" y1="720" y2="720"/>
+<line stroke="#000" stroke-width="3" x1="1157" x2="410" y1="177" y2="177"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(-90 1242 645)" x="1242" y="640">
+assigned by▶
+</text>
+<line stroke="#000" stroke-width="3" x1="1242" x2="1242" y1="815" y2="476"/>
+<line stroke="#000" stroke-width="3" x1="455" x2="1242" y1="815" y2="815"/>
+<line stroke="#000" stroke-width="3" x1="1242" x2="1850" y1="476" y2="476"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(-90 1328 480)" x="1328" y="475">
+created by▶
+</text>
+<line stroke="#000" stroke-width="3" x1="1328" x2="1328" y1="745" y2="215"/>
+<line stroke="#000" stroke-width="3" x1="1850" x2="1328" y1="745" y2="745"/>
+<line stroke="#000" stroke-width="3" x1="1328" x2="410" y1="215" y2="215"/>
+<text dominant-baseline="central" fill="black" font-family="Arial" font-size="18" text-anchor="middle" transform="rotate(-90 1414 690)" x="1414" y="685">
+reviewed by▶
+</text>
+<line stroke="#000" stroke-width="3" x1="1414" x2="1414" y1="840" y2="540"/>
+<line stroke="#000" stroke-width="3" x1="1850" x2="1414" y1="840" y2="840"/>
+<line stroke="#000" stroke-width="3" x1="1414" x2="1850" y1="540" y2="540"/>
 </svg>

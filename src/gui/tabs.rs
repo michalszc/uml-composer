@@ -239,7 +239,6 @@ impl Controller<DynamicTabsData, Tabs<DynamicTabs>> for TabsControler {
                     UmlParser::parse(tab_data.content.clone().as_str())
                 });
                 if result.is_ok() {
-                    println!("asd");
                     let content = result.ok().unwrap();
                     data.add_svg_preview(tab_data.name.clone(), content, String::from(""));
                 } else {

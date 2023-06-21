@@ -47,7 +47,7 @@ impl Context {
     }
 
     pub fn print(&self) {
-        println!("Context name {}. Width: {}. Use cases: ", self.label, self.width_number);
+        tracing::info!("Context name {}. Width: {}. Use cases: ", self.label, self.width_number);
         for use_case in &self.use_cases {
             use_case.print();
         }
@@ -65,6 +65,7 @@ impl Context {
         let corner_radius = 10;
         let text_size = 20;
         let mut heights: HashMap<i32, i32> = (1..=self.width_number).map(|key| (key, 1)).collect();
+        let mut max_heights: HashMap<i32, i32> = (1..=self.width_number).map(|key| (key, 0)).collect();
 
         let text_element = TextElement::new()
             .set("x", (x as f64 + 0.5 * (width as f64)).to_string())
@@ -95,9 +96,18 @@ impl Context {
         let uc_height = f64::min(0.8 * (height as f64) / self.use_cases.len() as f64, 50.0);
         let mut y_in_column = y;
         let _use_cases_length = self.get_use_cases().len();
+
+        for use_case in &mut self.use_cases {
+            if let Some(value) = max_heights.get_mut(&use_case.get_width_number()) {
+                *value += 1;
+            }
+        }
+
         for use_case in &mut self.use_cases {
             if let Some(value) = heights.get(&use_case.get_width_number()) {
-                y_in_column = y + (*value as i32) * std::cmp::min(100, height / (_use_cases_length + 1) as i32);
+                if let Some(value2) = max_heights.get(&use_case.get_width_number()) {
+                    y_in_column = y + (*value as i32) * std::cmp::min(100, height / (value2 + 1) as i32);
+                }
             }
             if let Some(value) = heights.get_mut(&use_case.get_width_number()) {
                 *value += 1;
